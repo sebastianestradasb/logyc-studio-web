@@ -275,7 +275,7 @@
   @media(max-width:900px){
     .nav-links,.nav .btn-primary{display:none}
     .nav{justify-content:center}
-    .burger{display:flex;position:absolute;left:0;top:50%;transform:translateY(-50%)}
+    .burger{display:flex;position:absolute;left:5%;top:50%;transform:translateY(-50%)}
     .mobile-menu{display:block;position:fixed;inset:74px 0 auto 0;z-index:49;
       background:rgba(10,10,10,.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--gray-2);
       transform:translateY(-120%);transition:transform .4s var(--ease);padding:24px 28px 34px}
