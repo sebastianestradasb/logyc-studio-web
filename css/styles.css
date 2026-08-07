@@ -274,7 +274,8 @@
   /* responsive */
   @media(max-width:900px){
     .nav-links,.nav .btn-primary{display:none}
-    .burger{display:flex}
+    .nav{justify-content:center}
+    .burger{display:flex;position:absolute;left:0;top:50%;transform:translateY(-50%)}
     .mobile-menu{display:block;position:fixed;inset:74px 0 auto 0;z-index:49;
       background:rgba(10,10,10,.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--gray-2);
       transform:translateY(-120%);transition:transform .4s var(--ease);padding:24px 28px 34px}
@@ -282,6 +283,7 @@
     .mobile-menu a{display:block;font-family:var(--font-mono);font-size:15px;color:var(--paper);
       text-decoration:none;padding:14px 0;border-bottom:1px solid var(--gray-2)}
     .mobile-menu .btn-primary{display:inline-flex;margin-top:22px}
+    .foot{flex-direction:column;justify-content:center;text-align:center;gap:16px}
     .intro-grid{grid-template-columns:1fr;gap:40px}
     .svc-top{grid-template-columns:1fr;gap:32px}
     .steps{grid-template-columns:1fr 1fr}
