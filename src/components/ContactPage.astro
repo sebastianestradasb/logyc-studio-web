@@ -1,0 +1,128 @@
+---
+import Base from '../layouts/Base.astro';
+import Instagram from './Instagram.astro';
+import { contact, social, routes, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const copy = {
+  es: {
+    title: 'Contacto — LOGYC STUDIO',
+    description: 'Escríbenos a info@logycstudio.com y cuéntanos tu proyecto de contenido con IA o diseño web. Te enviamos una cotización sin compromiso.',
+    eyebrow: 'CONTACTO',
+    h1a: 'Hablemos de',
+    h1b: 'tu proyecto.',
+    sub: 'Cuéntanos qué necesitas y te enviamos una cotización sin compromiso.',
+    emailLabel: 'Correo',
+    emailNote: 'Por ahora atendemos todos los proyectos por correo.',
+    write: 'Escribir correo',
+    subject: 'Proyecto con LOGYC Studio',
+    copyBtn: 'Copiar correo',
+    copied: '¡Copiado!',
+    waLabel: 'WhatsApp',
+    waSoon: 'Próximamente',
+    waNote: 'Muy pronto también podrás escribirnos por WhatsApp.',
+    waBtn: 'Escríbenos por WhatsApp',
+    igLabel: 'Instagram',
+    igNote: 'Mira nuestros trabajos más recientes.',
+    briefEyebrow: 'PARA COTIZAR MÁS RÁPIDO',
+    briefTitle: 'Cuéntanos en tu correo',
+    brief: [
+      ['Qué necesitas', 'Contenido con IA, un sitio web o ambos.'],
+      ['Sobre tu marca', 'Qué vendes y a quién le vendes.'],
+      ['Tus referencias', 'Tu Instagram, tu sitio actual o marcas que te gusten.'],
+      ['Tus tiempos', 'Para cuándo lo necesitas.'],
+    ],
+    explore: 'Mientras tanto, conoce nuestros paquetes web',
+  },
+  en: {
+    title: 'Contact — LOGYC STUDIO',
+    description: 'Email us at info@logycstudio.com and tell us about your AI content or web design project. We will send you a no-obligation quote.',
+    eyebrow: 'CONTACT',
+    h1a: "Let's talk about",
+    h1b: 'your project.',
+    sub: "Tell us what you need and we'll send you a no-obligation quote.",
+    emailLabel: 'Email',
+    emailNote: 'For now, we handle every project by email.',
+    write: 'Write an email',
+    subject: 'Project with LOGYC Studio',
+    copyBtn: 'Copy email',
+    copied: 'Copied!',
+    waLabel: 'WhatsApp',
+    waSoon: 'Coming soon',
+    waNote: "You'll be able to message us on WhatsApp very soon.",
+    waBtn: 'Message us on WhatsApp',
+    igLabel: 'Instagram',
+    igNote: 'See our latest work.',
+    briefEyebrow: 'FOR A FASTER QUOTE',
+    briefTitle: 'Tell us in your email',
+    brief: [
+      ['What you need', 'AI content, a website, or both.'],
+      ['About your brand', 'What you sell and who you sell to.'],
+      ['Your references', 'Your Instagram, your current site, or brands you like.'],
+      ['Your timeline', 'When you need it.'],
+    ],
+    explore: 'In the meantime, see our web packages',
+  },
+}[lang];
+
+const mailto = `mailto:${contact.email}?subject=${encodeURIComponent(copy.subject)}`;
+---
+<Base lang={lang} page="contact" title={copy.title} description={copy.description}>
+<section class="hero page-hero contact-hero" id="top">
+  <div class="hero-glow" id="heroGlow"></div>
+  <div class="wrap hero-inner">
+    <div class="hero-eyebrow"><span class="eyebrow"><span class="bk">[</span> {copy.eyebrow} <span class="bk">]</span></span></div>
+    <h1>
+      <span class="reveal-line"><span style="animation-delay:.35s">{copy.h1a}</span></span>
+      <span class="reveal-line"><span class="lime" style="animation-delay:.5s">{copy.h1b}</span></span>
+    </h1>
+    <p class="sub">{copy.sub}</p>
+  </div>
+</section>
+
+<section class="contact-main">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div class="contact-card contact-email fx">
+        <div class="mlabel">{copy.emailLabel}</div>
+        <a class="contact-address" href={mailto}>{contact.email}</a>
+        <p>{copy.emailNote}</p>
+        <div class="contact-actions">
+          <a href={mailto} class="btn btn-primary">{copy.write} <span class="arw">→</span></a>
+          <button type="button" class="btn btn-ghost" data-copy={contact.email} data-copied={copy.copied}>{copy.copyBtn}</button>
+        </div>
+      </div>
+
+      <div class="contact-side">
+        <div class="contact-card fx">
+          <div class="contact-card-head"><div class="mlabel">{copy.waLabel}</div><span class="soon">{copy.waSoon}</span></div>
+          <p>{copy.waNote}</p>
+          <span class="btn btn-ghost is-disabled" aria-disabled="true">{copy.waBtn}</span>
+        </div>
+        <div class="contact-card fx">
+          <div class="mlabel">{copy.igLabel}</div>
+          <p>{copy.igNote}</p>
+          <Instagram lang={lang} variant="footer" />
+        </div>
+      </div>
+    </div>
+
+    <div class="brief fx">
+      <div class="sec-head"><span class="eyebrow"><span class="bk">[</span> {copy.briefEyebrow} <span class="bk">]</span></span></div>
+      <h2 class="sec-title">{copy.briefTitle}</h2>
+      <div class="brief-grid">
+        {copy.brief.map(([h, p], i) => (
+          <div class="step"><div class="n">{String(i + 1).padStart(2, '0')}</div><h4>{h}</h4><p>{p}</p></div>
+        ))}
+      </div>
+      <div class="contact-explore">
+        <a href={routes.web[lang]} class="btn btn-ghost">{copy.explore} <span class="arw">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+</Base>

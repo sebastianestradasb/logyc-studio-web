@@ -12,6 +12,18 @@ var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   burger.addEventListener('click', function(){ menu.classList.toggle('open'); });
   menu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ menu.classList.remove('open'); }); });
 
+  // copy-to-clipboard buttons (e.g. the email on the contact page)
+  document.querySelectorAll('[data-copy]').forEach(function(btn){
+    var label = btn.textContent;
+    btn.addEventListener('click', function(){
+      if(!navigator.clipboard) return;
+      navigator.clipboard.writeText(btn.dataset.copy).then(function(){
+        btn.textContent = btn.dataset.copied || label;
+        setTimeout(function(){ btn.textContent = label; }, 2000);
+      });
+    });
+  });
+
   // scroll reveal
   var obs = new IntersectionObserver(function(entries){
     entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); } });

@@ -72,6 +72,11 @@
   .nav-right{display:flex;align-items:center;gap:28px}
 
   .nav-links{display:flex;align-items:center;gap:32px}
+  /* Six menu items: tighten spacing on narrow desktops, before the burger menu takes over at 900px */
+  @media(min-width:901px) and (max-width:1100px){
+    .nav-right{gap:18px}
+    .nav-links{gap:18px}
+  }
   .nav-links a{font-family:var(--font-mono);font-weight:500;font-size:12.5px;letter-spacing:.04em;color:var(--gray-3);
     text-decoration:none;transition:color .25s}
   .nav-links a:hover,.nav-links a[aria-current="page"]{color:var(--paper)}
@@ -331,6 +336,30 @@
   .pay-row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--gray-2);font-size:14.5px;color:#d0d0d0}
   .pay-row b{font-family:var(--font-mono);font-weight:600;color:var(--paper)}
 
+  /* ---------- Contact page ---------- */
+  .contact-hero{min-height:62vh;padding-bottom:40px}
+  .contact-main{padding:0 0 120px}
+  .contact-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;align-items:stretch}
+  .contact-side{display:grid;gap:20px}
+  .contact-card{border:1px solid var(--gray-2);border-radius:16px;padding:30px 28px;display:flex;flex-direction:column;gap:14px;
+    background:rgba(17,17,17,.6)}
+  .contact-card p{font-size:14.5px;color:var(--gray-3);line-height:1.55}
+  .contact-email{border-color:var(--lime);padding:40px 36px;justify-content:center;
+    background:linear-gradient(180deg,rgba(175,252,48,.06),transparent);box-shadow:0 0 60px rgba(175,252,48,.08)}
+  .contact-address{font-family:var(--font-display);font-weight:800;font-size:clamp(22px,6.4vw,54px);letter-spacing:-.035em;
+    line-height:1.05;color:var(--paper);text-decoration:none;overflow-wrap:anywhere;transition:color .25s}
+  @media(min-width:901px){.contact-address{font-size:clamp(28px,3.6vw,54px)}}
+  .contact-address:hover{color:var(--lime)}
+  .contact-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
+  .contact-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .soon{font-family:var(--font-mono);font-weight:600;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--gray-3);border:1px solid var(--gray-2);border-radius:6px;padding:4px 9px}
+  .btn.is-disabled{opacity:.45;cursor:not-allowed;align-self:flex-start}
+  .contact-side .ig-link{align-self:flex-start}
+  .brief{margin-top:110px}
+  .brief-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:48px}
+  .contact-explore{margin-top:48px}
+
   /* ---------- Instagram ---------- */
   .ig-link{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-mono);font-weight:600;font-size:12.5px;
     letter-spacing:.04em;color:var(--paper);text-decoration:none;transition:color .25s}
@@ -412,6 +441,9 @@
     .incl-grid{grid-template-columns:1fr;gap:48px}
     .pkgs.two{grid-template-columns:1fr;gap:28px}
     .maint,.maint-lists,.pay{grid-template-columns:1fr}
+    .contact-grid{grid-template-columns:1fr}
+    .brief-grid{grid-template-columns:1fr 1fr}
+    .brief{margin-top:80px}
     .case{grid-template-columns:1fr;gap:44px}
     .case-stage{padding-bottom:40px}
     .phone{right:-4px;width:34%;border-radius:22px;padding:6px}
@@ -424,6 +456,8 @@
     .tl{grid-template-columns:60px 1fr;gap:18px}
     .wrap{padding:0 20px}
     .pg-item{grid-template-columns:1fr;gap:4px}
+    .brief-grid{grid-template-columns:1fr}
+    .contact-email{padding:30px 24px}
     .cmp th,.cmp td{padding:14px 16px;font-size:14px}
   }
   @media(prefers-reduced-motion:reduce){

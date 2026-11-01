@@ -18,7 +18,9 @@ const links = [
   { href: section('contenido'), label: t.nav.contenido },
   { href: section('proceso'), label: t.nav.proceso },
   { href: section('faq'), label: t.nav.faq },
+  { href: routes.contact[lang], label: t.nav.contacto, current: page === 'contact' },
 ];
+const contactPage = routes.contact[lang];
 const current = (on: boolean) => (on ? 'page' : undefined);
 ---
 <header id="hdr">
@@ -30,7 +32,7 @@ const current = (on: boolean) => (on ? 'page' : undefined);
       <nav class="nav-links">
         {links.map((l) => <a href={l.href} aria-current={current(!!l.current)}>{l.label}</a>)}
       </nav>
-      <a href="#contacto" class="btn btn-primary">{t.cta} <span class="arw">→</span></a>
+      <a href={contactPage} class="btn btn-primary">{t.cta} <span class="arw">→</span></a>
       <div class="lang-switch">
         <a href={routes[page].es} class={lang === 'es' ? 'active' : undefined} aria-current={current(lang === 'es')}>ES</a>
         <span class="sep">/</span>
@@ -42,5 +44,5 @@ const current = (on: boolean) => (on ? 'page' : undefined);
 </header>
 <div class="mobile-menu" id="mobileMenu">
   {links.map((l) => <a href={l.href} aria-current={current(!!l.current)}>{l.label}</a>)}
-  <a href="#contacto" class="btn btn-primary">{t.cta} <span class="arw">→</span></a>
+  <a href={contactPage} class="btn btn-primary">{t.cta} <span class="arw">→</span></a>
 </div>
