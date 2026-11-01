@@ -7,8 +7,14 @@ export const routes: Record<Page, Record<Lang, string>> = {
   web: { es: 'web.html', en: 'web-en.html' },
 };
 
+export const social = {
+  instagram: { url: 'https://www.instagram.com/logycstudio/', handle: '@logycstudio' },
+};
+
 export const ui = {
   es: {
+    followUs: 'Mira más de nuestro trabajo en Instagram',
+    instagramLabel: 'Instagram de LOGYC Studio (se abre en otra pestaña)',
     homeLabel: 'LOGYC Studio inicio',
     menu: 'Menú',
     cta: 'Empezar proyecto',
@@ -16,6 +22,8 @@ export const ui = {
     nav: { servicios: 'Servicios', web: 'Web', contenido: 'Contenido IA', proceso: 'Proceso', faq: 'FAQ' },
   },
   en: {
+    followUs: 'See more of our work on Instagram',
+    instagramLabel: 'LOGYC Studio on Instagram (opens in a new tab)',
     homeLabel: 'LOGYC Studio home',
     menu: 'Menu',
     cta: 'Start a project',

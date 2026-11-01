@@ -331,6 +331,15 @@
   .pay-row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--gray-2);font-size:14.5px;color:#d0d0d0}
   .pay-row b{font-family:var(--font-mono);font-weight:600;color:var(--paper)}
 
+  /* ---------- Instagram ---------- */
+  .ig-link{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-mono);font-weight:600;font-size:12.5px;
+    letter-spacing:.04em;color:var(--paper);text-decoration:none;transition:color .25s}
+  .ig-link svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8}
+  .ig-link svg .ig-dot{fill:currentColor;stroke:none}
+  .ig-link:hover{color:var(--lime)}
+  .cta-social{position:relative;z-index:2;margin-top:40px;display:flex;justify-content:center;align-items:center;
+    gap:14px;flex-wrap:wrap;font-size:14px;color:var(--gray-3)}
+
   /* ---------- Scroll effects (React islands) ---------- */
   @keyframes heroBgIn{to{opacity:.8}}
   .showcase{position:relative;z-index:2;overflow:hidden}

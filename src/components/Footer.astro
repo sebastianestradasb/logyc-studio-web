@@ -1,5 +1,6 @@
 ---
 import Logo from './Logo.astro';
+import Instagram from './Instagram.astro';
 import { routes, ui, type Lang, type Page } from '../i18n';
 
 interface Props {
@@ -14,6 +15,7 @@ const t = ui[lang];
     <a href={page === 'home' ? '#top' : routes.home[lang]} class="logo" aria-label={t.homeLabel}>
       <Logo idSuffix="F" />
     </a>
+    <Instagram lang={lang} variant="footer" />
     <div class="fmono">© 2026 LOGYC STUDIO <span class="lime">/</span> {t.footer}</div>
   </div>
 </footer>
