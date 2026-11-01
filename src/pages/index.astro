@@ -4,6 +4,7 @@ import Instagram from '../components/Instagram.astro';
 import HeroBackground from '../components/react/HeroBackground';
 import ScrollWordReveal from '../components/react/ScrollWordReveal';
 import StackedSteps from '../components/react/StackedSteps';
+import WhyBento from '../components/react/WhyBento';
 import { ContainerScroll } from '../components/ui/container-scroll-animation';
 ---
 <Base lang="es" page="home" title="LOGYC STUDIO — Contenido con IA + Web">
@@ -247,12 +248,7 @@ import { ContainerScroll } from '../components/ui/container-scroll-animation';
       <span class="eyebrow"><span class="bk">[</span> POR QUÉ LOGYC <span class="bk">]</span></span>
     </div>
     <h2 class="sec-title fx"><ScrollWordReveal client:visible parts={[{"text": "No somos una agencia tradicional. Y eso es una"}, {"text": "ventaja.", "lime": true}]} /></h2>
-    <div class="why-grid fx">
-      <div class="why-cell"><div class="sym">⚡</div><h4>Velocidad</h4><p>Entregamos en días lo que otros tardan meses. La IA hace el trabajo pesado; nosotros ponemos el criterio.</p></div>
-      <div class="why-cell"><div class="sym">◇</div><h4>Calidad</h4><p>Cada pieza pasa por dirección humana. La tecnología es la herramienta, no el atajo.</p></div>
-      <div class="why-cell"><div class="sym">○</div><h4>Precio justo</h4><p>Menos costos de producción significan mejores precios para ti — sin sacrificar el resultado.</p></div>
-      <div class="why-cell"><div class="sym">[ ]</div><h4>Coherencia</h4><p>Contenido y web que hablan el mismo idioma visual: el de tu marca.</p></div>
-    </div>
+    <WhyBento client:visible copy={{"speed": {"title": "Velocidad", "text": "Entregamos en días lo que otros tardan meses. La IA hace el trabajo pesado; nosotros ponemos el criterio.", "tradLabel": "Producción tradicional", "tradValue": "semanas o meses", "logycValue": "3–10 días hábiles"}, "quality": {"title": "Calidad", "text": "Cada pieza pasa por dirección humana. La tecnología es la herramienta, no el atajo.", "steps": ["IA genera", "Dirección humana", "Pieza final"]}, "price": {"title": "Precio justo", "text": "Menos costos de producción significan mejores precios para ti — sin sacrificar el resultado.", "cut": ["Set de fotografía", "Locación", "Semanas de espera"], "result": "Mejores precios para ti"}, "consistency": {"title": "Coherencia", "text": "Contenido y web que hablan el mismo idioma visual: el de tu marca.", "post": "POST", "web": "TU SITIO WEB", "legend": "Mismos colores · misma tipografía · misma voz"}}} />
   </div>
 </section>
 

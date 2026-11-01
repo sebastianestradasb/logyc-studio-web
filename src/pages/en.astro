@@ -4,6 +4,7 @@ import Instagram from '../components/Instagram.astro';
 import HeroBackground from '../components/react/HeroBackground';
 import ScrollWordReveal from '../components/react/ScrollWordReveal';
 import StackedSteps from '../components/react/StackedSteps';
+import WhyBento from '../components/react/WhyBento';
 import { ContainerScroll } from '../components/ui/container-scroll-animation';
 ---
 <Base lang="en" page="home" title="LOGYC STUDIO — AI Content + Web">
@@ -247,12 +248,7 @@ import { ContainerScroll } from '../components/ui/container-scroll-animation';
       <span class="eyebrow"><span class="bk">[</span> WHY LOGYC <span class="bk">]</span></span>
     </div>
     <h2 class="sec-title fx"><ScrollWordReveal client:visible parts={[{"text": "We're not a traditional agency. And that's an"}, {"text": "advantage.", "lime": true}]} /></h2>
-    <div class="why-grid fx">
-      <div class="why-cell"><div class="sym">⚡</div><h4>Speed</h4><p>We deliver in days what others take months to do. AI does the heavy lifting; we bring the judgment.</p></div>
-      <div class="why-cell"><div class="sym">◇</div><h4>Quality</h4><p>Every piece goes through human direction. Technology is the tool, not the shortcut.</p></div>
-      <div class="why-cell"><div class="sym">○</div><h4>Fair pricing</h4><p>Lower production costs mean better prices for you — without sacrificing the result.</p></div>
-      <div class="why-cell"><div class="sym">[ ]</div><h4>Consistency</h4><p>Content and web that speak the same visual language: your brand's.</p></div>
-    </div>
+    <WhyBento client:visible copy={{"speed": {"title": "Speed", "text": "We deliver in days what others take months to do. AI does the heavy lifting; we bring the judgment.", "tradLabel": "Traditional production", "tradValue": "weeks or months", "logycValue": "3–10 business days"}, "quality": {"title": "Quality", "text": "Every piece goes through human direction. Technology is the tool, not the shortcut.", "steps": ["AI generates", "Human direction", "Final piece"]}, "price": {"title": "Fair pricing", "text": "Lower production costs mean better prices for you — without sacrificing the result.", "cut": ["Photo shoot", "Location", "Weeks of waiting"], "result": "Better prices for you"}, "consistency": {"title": "Consistency", "text": "Content and web that speak the same visual language: your brand's.", "post": "POST", "web": "YOUR WEBSITE", "legend": "Same colors · same type · same voice"}}} />
   </div>
 </section>
 
