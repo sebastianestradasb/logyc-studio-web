@@ -72,6 +72,32 @@ var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }
   buildOrbit('orbit1'); buildOrbit('orbit2');
 
+  // portfolio previews: scroll slowly on their own while visible; the visitor can take over anytime
+  if(!reduce){
+    document.querySelectorAll('.autoscroll').forEach(function(box){
+      var speed = parseFloat(box.dataset.speed) || 50, pos = 0, last = 0, holdUntil = 0, visible = false, raf = null;
+      function step(t){
+        if(!visible){ raf = null; last = 0; return; }
+        var dt = last ? Math.min((t - last) / 1000, .1) : 0; last = t;
+        if(Date.now() < holdUntil){ pos = box.scrollTop; }
+        else {
+          var max = box.scrollHeight - box.clientHeight;
+          if(pos >= max - 1){
+            holdUntil = Date.now() + 2200;
+            setTimeout(function(){ box.scrollTo({top: 0, behavior: 'smooth'}); pos = 0; }, 1400);
+          } else { pos += speed * dt; box.scrollTop = pos; }
+        }
+        raf = requestAnimationFrame(step);
+      }
+      ['wheel','touchstart','pointerdown','keydown'].forEach(function(ev){
+        box.addEventListener(ev, function(){ holdUntil = Date.now() + 4000; }, {passive:true});
+      });
+      new IntersectionObserver(function(entries){
+        entries.forEach(function(e){ visible = e.isIntersecting; if(visible && !raf) raf = requestAnimationFrame(step); });
+      }, {threshold:.25}).observe(box);
+    });
+  }
+
   // FAQ accordion
   document.querySelectorAll('.acc-item').forEach(function(item){
     var q = item.querySelector('.acc-q');
