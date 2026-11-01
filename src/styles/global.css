@@ -1,0 +1,5 @@
+/* The site's own styles sit in the "site" layer: above Tailwind's reset (base), so they keep
+   their look, and below Tailwind's utilities, so classes inside React components still win. */
+@layer theme, base, site, components, utilities;
+@import "tailwindcss";
+@import "./styles.css" layer(site);

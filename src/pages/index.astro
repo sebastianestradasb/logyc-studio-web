@@ -1,9 +1,14 @@
 ---
 import Base from '../layouts/Base.astro';
+import HeroBackground from '../components/react/HeroBackground';
+import ScrollWordReveal from '../components/react/ScrollWordReveal';
+import StackedSteps from '../components/react/StackedSteps';
+import { ContainerScroll } from '../components/ui/container-scroll-animation';
 ---
 <Base lang="es" page="home" title="LOGYC STUDIO — Contenido con IA + Web">
 <!-- HERO -->
 <section class="hero" id="top">
+  <HeroBackground client:load />
   <div class="hero-glow" id="heroGlow"></div>
   <div class="wrap hero-inner">
     <div class="hero-eyebrow"><span class="eyebrow"><span class="bk">[</span> STUDIO DE CONTENIDO + WEB <span class="bk">]</span></span></div>
@@ -28,6 +33,18 @@ import Base from '../layouts/Base.astro';
   </div>
 </div>
 
+<!-- SHOWCASE -->
+<section class="showcase">
+  <ContainerScroll client:load>
+    <div slot="titleComponent" class="showcase-head">
+      <span class="eyebrow"><span class="bk">[</span> TRABAJO REAL <span class="bk">]</span></span>
+      <h2 class="sec-title">Así se ve lo que <span class="lime">construimos.</span></h2>
+    </div>
+    <img src="/img/portfolio/precision-garage-desktop.jpg" width="1100" height="6316" alt="Sitio web de Precision Garage diseñado por LOGYC" class="showcase-shot" draggable="false">
+  </ContainerScroll>
+  <div class="showcase-link"><a href="#portafolio" class="btn btn-ghost">Ver el caso completo <span class="arw">↓</span></a></div>
+</section>
+
 <!-- INTRO / SERVICIOS -->
 <section class="block" id="servicios">
   <div class="wrap">
@@ -36,7 +53,7 @@ import Base from '../layouts/Base.astro';
     </div>
     <div class="intro-grid">
       <div class="fx">
-        <h2 class="sec-title">Un solo estudio para todo lo<br>que tu marca necesita <span class="lime">ver bien.</span></h2>
+        <h2 class="sec-title"><ScrollWordReveal client:visible parts={[{"text": "Un solo estudio para todo lo que tu marca necesita"}, {"text": "ver bien.", "lime": true}]} /></h2>
         <p class="lead">Combinamos inteligencia artificial y diseño para producir contenido y sitios web de nivel profesional a una fracción del costo y del tiempo tradicional. Tú nos cuentas qué necesitas, nosotros lo producimos.</p>
       </div>
       <div class="fx">
@@ -228,7 +245,7 @@ import Base from '../layouts/Base.astro';
     <div class="sec-head fx">
       <span class="eyebrow"><span class="bk">[</span> POR QUÉ LOGYC <span class="bk">]</span></span>
     </div>
-    <h2 class="sec-title fx">No somos una agencia tradicional.<br>Y eso es una <span class="lime">ventaja.</span></h2>
+    <h2 class="sec-title fx"><ScrollWordReveal client:visible parts={[{"text": "No somos una agencia tradicional. Y eso es una"}, {"text": "ventaja.", "lime": true}]} /></h2>
     <div class="why-grid fx">
       <div class="why-cell"><div class="sym">⚡</div><h4>Velocidad</h4><p>Entregamos en días lo que otros tardan meses. La IA hace el trabajo pesado; nosotros ponemos el criterio.</p></div>
       <div class="why-cell"><div class="sym">◇</div><h4>Calidad</h4><p>Cada pieza pasa por dirección humana. La tecnología es la herramienta, no el atajo.</p></div>
@@ -245,12 +262,7 @@ import Base from '../layouts/Base.astro';
       <span class="eyebrow"><span class="bk">[</span> CÓMO TRABAJAMOS <span class="bk">]</span></span>
     </div>
     <h2 class="sec-title fx">Simple, claro y <span class="lime">sin vueltas.</span></h2>
-    <div class="timeline">
-      <div class="tl fx"><div class="tl-n">01</div><div class="tl-c"><h4>Hablamos</h4><p>Nos cuentas qué necesitas y hacia dónde va tu marca.</p></div></div>
-      <div class="tl fx"><div class="tl-n">02</div><div class="tl-c"><h4>Cotizamos</h4><p>Te enviamos una propuesta clara, con alcance y tiempos definidos.</p></div></div>
-      <div class="tl fx"><div class="tl-n">03</div><div class="tl-c"><h4>Producimos</h4><p>Creamos, tú revisas dentro de las rondas acordadas.</p></div></div>
-      <div class="tl fx"><div class="tl-n">04</div><div class="tl-c"><h4>Entregamos</h4><p>Recibes todo listo para usar y salir al mundo.</p></div></div>
-    </div>
+    <StackedSteps client:visible steps={[{"title": "Hablamos", "text": "Nos cuentas qué necesitas y hacia dónde va tu marca."}, {"title": "Cotizamos", "text": "Te enviamos una propuesta clara, con alcance y tiempos definidos."}, {"title": "Producimos", "text": "Creamos, tú revisas dentro de las rondas acordadas."}, {"title": "Entregamos", "text": "Recibes todo listo para usar y salir al mundo."}]} />
   </div>
 </section>
 

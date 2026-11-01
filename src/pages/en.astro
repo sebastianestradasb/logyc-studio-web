@@ -1,9 +1,14 @@
 ---
 import Base from '../layouts/Base.astro';
+import HeroBackground from '../components/react/HeroBackground';
+import ScrollWordReveal from '../components/react/ScrollWordReveal';
+import StackedSteps from '../components/react/StackedSteps';
+import { ContainerScroll } from '../components/ui/container-scroll-animation';
 ---
 <Base lang="en" page="home" title="LOGYC STUDIO — AI Content + Web">
 <!-- HERO -->
 <section class="hero" id="top">
+  <HeroBackground client:load />
   <div class="hero-glow" id="heroGlow"></div>
   <div class="wrap hero-inner">
     <div class="hero-eyebrow"><span class="eyebrow"><span class="bk">[</span> CONTENT + WEB STUDIO <span class="bk">]</span></span></div>
@@ -28,6 +33,18 @@ import Base from '../layouts/Base.astro';
   </div>
 </div>
 
+<!-- SHOWCASE -->
+<section class="showcase">
+  <ContainerScroll client:load>
+    <div slot="titleComponent" class="showcase-head">
+      <span class="eyebrow"><span class="bk">[</span> REAL WORK <span class="bk">]</span></span>
+      <h2 class="sec-title">This is what we <span class="lime">build.</span></h2>
+    </div>
+    <img src="/img/portfolio/precision-garage-desktop.jpg" width="1100" height="6316" alt="Precision Garage website designed by LOGYC" class="showcase-shot" draggable="false">
+  </ContainerScroll>
+  <div class="showcase-link"><a href="#portafolio" class="btn btn-ghost">See the full case study <span class="arw">↓</span></a></div>
+</section>
+
 <!-- INTRO / SERVICIOS -->
 <section class="block" id="servicios">
   <div class="wrap">
@@ -36,7 +53,7 @@ import Base from '../layouts/Base.astro';
     </div>
     <div class="intro-grid">
       <div class="fx">
-        <h2 class="sec-title">One studio for everything<br>your brand needs to <span class="lime">look good.</span></h2>
+        <h2 class="sec-title"><ScrollWordReveal client:visible parts={[{"text": "One studio for everything your brand needs to"}, {"text": "look good.", "lime": true}]} /></h2>
         <p class="lead">We combine artificial intelligence and design to produce professional-grade content and websites at a fraction of the traditional cost and time. You tell us what you need, we produce it.</p>
       </div>
       <div class="fx">
@@ -228,7 +245,7 @@ import Base from '../layouts/Base.astro';
     <div class="sec-head fx">
       <span class="eyebrow"><span class="bk">[</span> WHY LOGYC <span class="bk">]</span></span>
     </div>
-    <h2 class="sec-title fx">We're not a traditional agency.<br>And that's an <span class="lime">advantage.</span></h2>
+    <h2 class="sec-title fx"><ScrollWordReveal client:visible parts={[{"text": "We're not a traditional agency. And that's an"}, {"text": "advantage.", "lime": true}]} /></h2>
     <div class="why-grid fx">
       <div class="why-cell"><div class="sym">⚡</div><h4>Speed</h4><p>We deliver in days what others take months to do. AI does the heavy lifting; we bring the judgment.</p></div>
       <div class="why-cell"><div class="sym">◇</div><h4>Quality</h4><p>Every piece goes through human direction. Technology is the tool, not the shortcut.</p></div>
@@ -245,12 +262,7 @@ import Base from '../layouts/Base.astro';
       <span class="eyebrow"><span class="bk">[</span> HOW WE WORK <span class="bk">]</span></span>
     </div>
     <h2 class="sec-title fx">Simple, clear, and <span class="lime">straight to the point.</span></h2>
-    <div class="timeline">
-      <div class="tl fx"><div class="tl-n">01</div><div class="tl-c"><h4>We talk</h4><p>You tell us what you need and where your brand is headed.</p></div></div>
-      <div class="tl fx"><div class="tl-n">02</div><div class="tl-c"><h4>We quote</h4><p>We send you a clear proposal, with defined scope and timeline.</p></div></div>
-      <div class="tl fx"><div class="tl-n">03</div><div class="tl-c"><h4>We produce</h4><p>We create, you review within the agreed rounds.</p></div></div>
-      <div class="tl fx"><div class="tl-n">04</div><div class="tl-c"><h4>We deliver</h4><p>You receive everything ready to use and go live.</p></div></div>
-    </div>
+    <StackedSteps client:visible steps={[{"title": "We talk", "text": "You tell us what you need and where your brand is headed."}, {"title": "We quote", "text": "We send you a clear proposal, with defined scope and timeline."}, {"title": "We produce", "text": "We create, you review within the agreed rounds."}, {"title": "We deliver", "text": "You receive everything ready to use and go live."}]} />
   </div>
 </section>
 
