@@ -1,0 +1,19 @@
+---
+import Logo from './Logo.astro';
+import { routes, ui, type Lang, type Page } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  page: Page;
+}
+const { lang, page } = Astro.props;
+const t = ui[lang];
+---
+<footer>
+  <div class="wrap foot">
+    <a href={page === 'home' ? '#top' : routes.home[lang]} class="logo" aria-label={t.homeLabel}>
+      <Logo idSuffix="F" />
+    </a>
+    <div class="fmono">© 2026 LOGYC STUDIO <span class="lime">/</span> {t.footer}</div>
+  </div>
+</footer>

@@ -1,0 +1,46 @@
+---
+import Logo from './Logo.astro';
+import { routes, ui, type Lang, type Page } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  page: Page;
+}
+const { lang, page } = Astro.props;
+const t = ui[lang];
+const home = routes.home[lang];
+const onHome = page === 'home';
+// Home sections are anchors on the home page; from other pages they link back to it.
+const section = (id: string) => (onHome ? `#${id}` : `${home}#${id}`);
+const links = [
+  { href: section('servicios'), label: t.nav.servicios },
+  { href: routes.web[lang], label: t.nav.web, current: page === 'web' },
+  { href: section('contenido'), label: t.nav.contenido },
+  { href: section('proceso'), label: t.nav.proceso },
+  { href: section('faq'), label: t.nav.faq },
+];
+const current = (on: boolean) => (on ? 'page' : undefined);
+---
+<header id="hdr">
+  <div class="wrap nav">
+    <a href={onHome ? '#top' : home} class="logo" aria-label={t.homeLabel}>
+      <Logo />
+    </a>
+    <div class="nav-right">
+      <nav class="nav-links">
+        {links.map((l) => <a href={l.href} aria-current={current(!!l.current)}>{l.label}</a>)}
+      </nav>
+      <a href="#contacto" class="btn btn-primary">{t.cta} <span class="arw">→</span></a>
+      <div class="lang-switch">
+        <a href={routes[page].es} class={lang === 'es' ? 'active' : undefined} aria-current={current(lang === 'es')}>ES</a>
+        <span class="sep">/</span>
+        <a href={routes[page].en} class={lang === 'en' ? 'active' : undefined} aria-current={current(lang === 'en')}>EN</a>
+      </div>
+      <button class="burger" id="burger" aria-label={t.menu}><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<div class="mobile-menu" id="mobileMenu">
+  {links.map((l) => <a href={l.href} aria-current={current(!!l.current)}>{l.label}</a>)}
+  <a href="#contacto" class="btn btn-primary">{t.cta} <span class="arw">→</span></a>
+</div>

@@ -1,0 +1,13 @@
+---
+import raw from '../assets/logo-logyc.svg?raw';
+
+interface Props {
+  // The SVG uses clipPath ids; a second copy on the same page needs its own ids.
+  idSuffix?: string;
+}
+const { idSuffix = '' } = Astro.props;
+const svg = idSuffix
+  ? raw.replace(/id="([^"]+)"/g, `id="$1${idSuffix}"`).replace(/url\(#([^)]+)\)/g, `url(#$1${idSuffix})`)
+  : raw;
+---
+<Fragment set:html={svg.trim()} />

@@ -1,0 +1,42 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import type { Lang, Page } from '../i18n';
+import '../styles/styles.css';
+
+interface Props {
+  lang: Lang;
+  page: Page;
+  title: string;
+  description?: string;
+}
+const { lang, page, title, description } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang={lang}>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{title}</title>
+{description && <meta name="description" content={description}>}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="/img/favicon.png">
+</head>
+<body>
+
+<div class="field"></div>
+<div class="vignette"></div>
+
+<Header lang={lang} page={page} />
+
+<slot />
+
+<Footer lang={lang} page={page} />
+
+<script>
+  import '../scripts/main.js';
+</script>
+</body>
+</html>
