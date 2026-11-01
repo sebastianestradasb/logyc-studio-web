@@ -110,6 +110,24 @@ var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     });
   }
 
+  // AI content reel: plays muted while on screen; tapping the video pauses/resumes, the button toggles sound
+  document.querySelectorAll('.reel').forEach(function(reel){
+    var video = reel.querySelector('video');
+    var sound = reel.querySelector('.reel-sound');
+    if(!reduce){
+      new IntersectionObserver(function(entries){
+        entries.forEach(function(e){ if(e.isIntersecting){ video.play().catch(function(){}); } else { video.pause(); } });
+      }, {threshold:.4}).observe(video);
+    }
+    video.addEventListener('click', function(){ if(video.paused){ video.play(); } else { video.pause(); } });
+    sound.addEventListener('click', function(){
+      video.muted = !video.muted;
+      if(!video.muted && video.paused){ video.play(); }
+      sound.setAttribute('aria-pressed', String(!video.muted));
+      sound.setAttribute('aria-label', video.muted ? sound.dataset.on : sound.dataset.off);
+    });
+  });
+
   // FAQ accordion
   document.querySelectorAll('.acc-item').forEach(function(item){
     var q = item.querySelector('.acc-q');

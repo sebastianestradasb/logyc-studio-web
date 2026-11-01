@@ -360,6 +360,23 @@
   .brief-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:48px}
   .contact-explore{margin-top:48px}
 
+  /* ---------- AI content reel ---------- */
+  .svc-visual .reel{position:relative;z-index:2;height:88%;display:flex;flex-direction:column;align-items:center;gap:14px}
+  .reel-phone{position:relative;height:calc(100% - 36px);aspect-ratio:9/16;border-radius:28px;padding:7px;background:#151515;
+    border:1px solid #2e2e2e;box-shadow:0 30px 70px rgba(0,0,0,.6),0 0 60px rgba(175,252,48,.08)}
+  .reel-video{display:block;width:100%;height:100%;object-fit:cover;border-radius:22px;background:#0d0d0d;cursor:pointer}
+  .reel-sound{position:absolute;right:16px;bottom:16px;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
+    border:1px solid rgba(255,255,255,.22);background:rgba(10,10,10,.6);backdrop-filter:blur(6px);color:var(--paper);cursor:pointer;
+    transition:border-color .25s,color .25s}
+  .reel-sound:hover{border-color:var(--lime);color:var(--lime)}
+  .reel-sound svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .reel-sound .ico-sound,.reel-sound[aria-pressed="true"] .ico-muted{display:none}
+  .reel-sound[aria-pressed="true"] .ico-sound{display:block}
+  .reel-tag{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-weight:500;font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--gray-3)}
+  .reel-tag b{color:var(--lime);font-weight:600}
+  .reel-tag .dot{width:7px;height:7px;border-radius:50%;background:var(--lime);box-shadow:0 0 10px rgba(175,252,48,.8);animation:blink 1.8s ease-in-out infinite}
+
   /* ---------- Instagram ---------- */
   .ig-link{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-mono);font-weight:600;font-size:12.5px;
     letter-spacing:.04em;color:var(--paper);text-decoration:none;transition:color .25s}
@@ -441,6 +458,7 @@
     .incl-grid{grid-template-columns:1fr;gap:48px}
     .pkgs.two{grid-template-columns:1fr;gap:28px}
     .maint,.maint-lists,.pay{grid-template-columns:1fr}
+    .svc-visual.has-reel{aspect-ratio:4/5}
     .contact-grid{grid-template-columns:1fr}
     .brief-grid{grid-template-columns:1fr 1fr}
     .brief{margin-top:80px}

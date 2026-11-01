@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Instagram from '../components/Instagram.astro';
+import Reel from '../components/Reel.astro';
 import HeroBackground from '../components/react/HeroBackground';
 import ScrollWordReveal from '../components/react/ScrollWordReveal';
 import StackedSteps from '../components/react/StackedSteps';
@@ -122,13 +123,10 @@ import { ContainerScroll } from '../components/ui/container-scroll-animation';
       <span class="eyebrow"><span class="bk">/</span> CONTENIDO CON IA</span>
     </div>
     <div class="svc-top">
-      <div class="svc-visual fx" id="visual1">
+      <div class="svc-visual has-reel fx" id="visual1">
         <span class="bracket l">[</span><span class="bracket r">]</span>
         <div class="pixel-orbit" id="orbit1"></div>
-        <div class="core">
-          <div class="big">IA</div>
-          <div class="lbl">imagen + video</div>
-        </div>
+        <Reel lang="es" />
       </div>
       <div class="svc-body fx">
         <h3>Imagen y video profesional,<br>sin set de fotografía.</h3>

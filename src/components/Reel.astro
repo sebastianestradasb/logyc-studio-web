@@ -1,0 +1,36 @@
+---
+import type { Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = {
+  es: {
+    client: 'Reel para KALMA',
+    made: 'Creado con IA',
+    alt: 'Reel de producto para KALMA, creado con IA',
+    soundOn: 'Activar sonido',
+    soundOff: 'Silenciar',
+  },
+  en: {
+    client: 'Reel for KALMA',
+    made: 'Made with AI',
+    alt: 'Product reel for KALMA, made with AI',
+    soundOn: 'Turn sound on',
+    soundOff: 'Mute',
+  },
+}[lang];
+---
+<!-- Plays muted while on screen (main.js); preload="none" keeps it off the network until then. -->
+<div class="reel">
+  <div class="reel-phone">
+    <video class="reel-video" src="/video/kalma-aura-miel.mp4" poster="/video/kalma-aura-miel-poster.jpg"
+      muted loop playsinline preload="none" width="720" height="1280" aria-label={t.alt}></video>
+    <button type="button" class="reel-sound" aria-pressed="false" aria-label={t.soundOn} data-on={t.soundOn} data-off={t.soundOff}>
+      <svg class="ico-muted" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" /><path d="m22 9-6 6M16 9l6 6" /></svg>
+      <svg class="ico-sound" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" /><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13" /></svg>
+    </button>
+  </div>
+  <div class="reel-tag"><span class="dot"></span>{t.client} · <b>{t.made}</b></div>
+</div>
