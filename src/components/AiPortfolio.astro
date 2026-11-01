@@ -1,0 +1,102 @@
+---
+import { getImage } from 'astro:assets';
+import AiShowcase from './react/AiShowcase';
+import type { Lang } from '../i18n';
+
+import estudio from '../assets/portfolio/kalma/estudio.jpg';
+import escalera from '../assets/portfolio/kalma/escalera.jpg';
+import caminando from '../assets/portfolio/kalma/caminando.jpg';
+import detalle from '../assets/portfolio/kalma/detalle.jpg';
+import campana from '../assets/portfolio/kalma/campana.jpg';
+import balcon from '../assets/portfolio/kalma/balcon.jpg';
+import loaferEstudio from '../assets/portfolio/kalma/loafer-estudio.jpg';
+import cafe from '../assets/portfolio/kalma/cafe.jpg';
+import loafer from '../assets/portfolio/kalma/loafer.jpg';
+import balconSofa from '../assets/portfolio/kalma/balcon-sofa.jpg';
+import brumaFlotando from '../assets/portfolio/kalma/bruma-flotando.jpg';
+import brumaDetalle from '../assets/portfolio/kalma/bruma-detalle.jpg';
+import brumaSofa from '../assets/portfolio/kalma/bruma-sofa.jpg';
+import banco from '../assets/portfolio/kalma/banco.jpg';
+import ventana from '../assets/portfolio/kalma/ventana.jpg';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const es = lang === 'es';
+
+// One slipper across five scenes, for the viewer. `pos` keeps the product in frame when cropped to 4:5.
+const viewDefs = [
+  { img: estudio, label: es ? 'Estudio' : 'Studio', alt: es ? 'Pantufla KALMA en estudio' : 'KALMA slipper in the studio', pos: '50% 60%' },
+  { img: escalera, label: es ? 'En casa' : 'At home', alt: es ? 'Pantufla KALMA en una escalera' : 'KALMA slipper on a staircase', pos: '50% 70%' },
+  { img: caminando, label: es ? 'En movimiento' : 'In motion', alt: es ? 'Modelo caminando con pantuflas KALMA' : 'Model walking in KALMA slippers', pos: '50% 70%' },
+  { img: detalle, label: es ? 'Detalle' : 'Detail', alt: es ? 'Pantuflas KALMA sostenidas en las manos' : 'KALMA slippers held in hands', pos: '50% 50%' },
+  { img: campana, label: es ? 'Campaña' : 'Campaign', alt: es ? 'Modelo sentado con pantuflas KALMA, foto de campaña' : 'Seated model wearing KALMA slippers, campaign shot', pos: '30% 50%' },
+];
+
+const shotDefs = [
+  { img: balcon, alt: es ? 'Hombre en un balcón con pantuflas KALMA negras' : 'Man on a balcony in black KALMA slippers' },
+  { img: loaferEstudio, alt: es ? 'Modelo con mocasines KALMA negros en estudio' : 'Model in black KALMA loafers in the studio' },
+  { img: cafe, alt: es ? 'Pantuflas KALMA negras junto a una taza de café' : 'Black KALMA slippers next to a coffee cup' },
+  { img: loafer, alt: es ? 'Detalle de mocasines KALMA negros' : 'Close-up of black KALMA loafers' },
+  { img: balconSofa, alt: es ? 'Pantuflas KALMA en una sala con vista' : 'KALMA slippers in a living room with a view' },
+  { img: brumaFlotando, alt: es ? 'Pantuflas KALMA Bruma en azul y rosa' : 'KALMA Bruma slippers in blue and pink' },
+  { img: brumaDetalle, alt: es ? 'Detalle de pantuflas KALMA Bruma' : 'Close-up of KALMA Bruma slippers' },
+  { img: brumaSofa, alt: es ? 'Modelo en un sofá con pantuflas KALMA Bruma' : 'Model on a sofa wearing KALMA Bruma slippers' },
+  { img: banco, alt: es ? 'Modelo en estudio con calzado KALMA' : 'Model in the studio wearing KALMA shoes' },
+  { img: ventana, alt: es ? 'Hombre junto a una ventana con pantuflas KALMA' : 'Man by a window in KALMA slippers' },
+];
+
+const webp = (img: ImageMetadata, width: number) => getImage({ src: img, width, format: 'webp', quality: 78 });
+
+const views = await Promise.all(
+  viewDefs.map(async (d) => {
+    const [s640, s1000, s1400, thumb, full] = await Promise.all([webp(d.img, 640), webp(d.img, 1000), webp(d.img, 1400), webp(d.img, 240), webp(d.img, 1800)]);
+    return {
+      src: s1000.src,
+      srcSet: `${s640.src} 640w, ${s1000.src} 1000w, ${s1400.src} 1400w`,
+      thumb: thumb.src,
+      full: full.src,
+      label: d.label,
+      alt: d.alt,
+      pos: d.pos,
+    };
+  }),
+);
+
+const gallery = await Promise.all(
+  shotDefs.map(async (d) => {
+    // Rows are 300px tall on desktop; render at ~2x that height for sharp retina tiles.
+    const width = Math.round((600 * d.img.width) / d.img.height);
+    const [tile, full] = await Promise.all([webp(d.img, width), webp(d.img, 1800)]);
+    return { src: tile.src, full: full.src, alt: d.alt, w: d.img.width, h: d.img.height };
+  }),
+);
+
+const copy = es
+  ? {
+      eyebrow: 'PORTAFOLIO · FOTOGRAFÍA CON IA',
+      title: 'Un producto. Cinco escenas. Cero sesiones de fotos.',
+      text: 'Fotografía de producto que creamos con IA para KALMA: la misma pantufla en estudio, en casa y en campaña, sin sets ni locaciones.',
+      views: 'Elige una escena',
+      more: 'Más de la colección',
+      hint: 'Haz clic en una foto para verla en grande',
+      close: 'Cerrar',
+      prev: 'Foto anterior',
+      next: 'Foto siguiente',
+      open: 'Ver en grande',
+    }
+  : {
+      eyebrow: 'PORTFOLIO · AI PHOTOGRAPHY',
+      title: 'One product. Five scenes. Zero photo shoots.',
+      text: 'Product photography we created with AI for KALMA: the same slipper in the studio, at home, and in a campaign, with no sets or locations.',
+      views: 'Pick a scene',
+      more: 'More from the collection',
+      hint: 'Click a photo to see it full size',
+      close: 'Close',
+      prev: 'Previous photo',
+      next: 'Next photo',
+      open: 'View full size',
+    };
+---
+<AiShowcase client:visible views={views} gallery={gallery} copy={copy} />
