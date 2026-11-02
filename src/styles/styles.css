@@ -121,6 +121,11 @@
   .hero h1 .lime{color:var(--lime)}
   .hero .sub{font-size:clamp(17px,2.1vw,21px);color:#cfcfcf;max-width:620px;line-height:1.55;
     opacity:0;animation:fadeUp .8s var(--ease) .95s forwards}
+  /* Description split into one idea per line; the last line (the differentiator) is highlighted */
+  .hero .sub:has(.sub-line){max-width:800px}
+  .hero .sub .sub-line{display:block}
+  .hero .sub .sub-line + .sub-line{margin-top:8px}
+  .hero .sub .sub-key{color:var(--paper);font-weight:500}
   .hero .cta-row{display:flex;gap:14px;margin-top:38px;flex-wrap:wrap;
     opacity:0;animation:fadeUp .8s var(--ease) 1.15s forwards}
   @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
