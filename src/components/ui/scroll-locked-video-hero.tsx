@@ -86,6 +86,9 @@ export default function MetroHero({
     let locked = false
     let lockedScrollY = 0
     let touchStartY = 0
+    let touchLastT = 0
+    let touchVelocity = 0 // px per ms, drives the inertia after the finger lifts
+    let momentum = 0
 
     const onLoadedData = () => {
       duration = video.duration || 0
@@ -213,13 +216,17 @@ export default function MetroHero({
     // Only pin when the page loads at the hero (not when opened mid-page, e.g. via #contacto).
     if (atHero()) engageLock()
 
-    // A thumb swipe covers far less distance than a mouse wheel, so touch screens scrub faster.
-    const distance = window.matchMedia?.("(pointer: coarse)").matches ? Math.min(scrubDistance, 1700) : scrubDistance
+    // A thumb swipe covers far less distance than a mouse wheel, so touch screens scrub the whole
+    // video in about two swipes (plus inertia, below) instead of a dozen.
+    const distance = window.matchMedia?.("(pointer: coarse)").matches ? Math.min(scrubDistance, 600) : scrubDistance
 
     function addDelta(deltaY: number) {
       const next = clamp(targetProgress + deltaY / distance, 0, 1)
       targetProgress = next
       if (targetProgress > 0.001) hasStartedScrolling = true
+      // The moment the video reaches its last frame, hand scrolling back to the page so the very
+      // next swipe moves on, instead of spending one more swipe just to unlock.
+      if (targetProgress >= 1 && deltaY > 0) releaseLock()
       return true
     }
 
@@ -231,14 +238,26 @@ export default function MetroHero({
 
     const onTouchStart = (e: TouchEvent) => {
       touchStartY = e.touches[0]?.clientY ?? 0
+      touchLastT = e.timeStamp
+      touchVelocity = 0
+      momentum = 0 // a new touch stops any inertia still running
     }
     const onTouchMove = (e: TouchEvent) => {
       const y = e.touches[0]?.clientY ?? touchStartY
       const deltaY = touchStartY - y
+      const dt = Math.max(1, e.timeStamp - touchLastT)
       touchStartY = y
+      touchLastT = e.timeStamp
+      touchVelocity = touchVelocity * 0.6 + (deltaY / dt) * 0.4
       if (!capture(deltaY)) return
       addDelta(deltaY)
       e.preventDefault()
+    }
+    // Like a native scroll, the video keeps going for a moment after a quick flick.
+    const onTouchEnd = (e: TouchEvent) => {
+      const idle = e.timeStamp - touchLastT
+      if (locked && idle < 80 && Math.abs(touchVelocity) > 0.15) momentum = touchVelocity
+      touchVelocity = 0
     }
 
     // Keyboard scrolling keeps working while the page is pinned.
@@ -270,6 +289,7 @@ export default function MetroHero({
     window.addEventListener("wheel", onWheel, { passive: false })
     window.addEventListener("touchstart", onTouchStart, { passive: true })
     window.addEventListener("touchmove", onTouchMove, { passive: false })
+    window.addEventListener("touchend", onTouchEnd, { passive: true })
     window.addEventListener("keydown", onKeyDown)
     document.addEventListener("click", onClick, true)
     // Also bind directly on the element itself, with capture — on some
@@ -279,6 +299,11 @@ export default function MetroHero({
     section.addEventListener("touchmove", onTouchMove, { passive: false, capture: true })
 
     function frame() {
+      if (momentum !== 0) {
+        if (locked) addDelta(momentum * 16.7)
+        momentum *= 0.94
+        if (Math.abs(momentum) < 0.02 || !locked) momentum = 0
+      }
       currentProgress += (targetProgress - currentProgress) * 0.18
 
       if (duration > 0) {
@@ -320,6 +345,7 @@ export default function MetroHero({
       window.removeEventListener("wheel", onWheel)
       window.removeEventListener("touchstart", onTouchStart)
       window.removeEventListener("touchmove", onTouchMove)
+      window.removeEventListener("touchend", onTouchEnd)
       window.removeEventListener("keydown", onKeyDown)
       document.removeEventListener("click", onClick, true)
       section.removeEventListener("touchstart", onTouchStart, true)
