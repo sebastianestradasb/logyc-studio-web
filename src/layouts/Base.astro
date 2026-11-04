@@ -9,13 +9,16 @@ interface Props {
   page: Page;
   title: string;
   description?: string;
+  // The 404 page is served at any path, so its relative links must resolve from the site root.
+  rootBase?: boolean;
 }
-const { lang, page, title, description } = Astro.props;
+const { lang, page, title, description, rootBase } = Astro.props;
 ---
 <!DOCTYPE html>
 <html lang={lang}>
 <head>
 <meta charset="UTF-8">
+{rootBase && <base href="/">}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{title}</title>
 {description && <meta name="description" content={description}>}

@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import HeroGradient from '../components/HeroGradient.astro';
+---
+<Base lang="es" page="home" title="Página no encontrada — LOGYC STUDIO" rootBase>
+<section class="hero page-hero has-gradient" id="top">
+  <HeroGradient />
+  <div class="wrap hero-inner">
+    <div class="hero-eyebrow"><span class="eyebrow"><span class="bk">[</span> ERROR 404 <span class="bk">]</span></span></div>
+    <h1>
+      <span class="reveal-line"><span style="animation-delay:.35s">Esta página</span></span>
+      <span class="reveal-line"><span class="lime" style="animation-delay:.5s">no existe.</span></span>
+    </h1>
+    <p class="sub">Puede que el enlace haya cambiado o que la dirección tenga un error. <span lang="en">This page doesn't exist.</span></p>
+    <div class="cta-row">
+      <a href="index.html" class="btn btn-primary">Volver al inicio <span class="arw">→</span></a>
+      <a href="contacto.html" class="btn btn-ghost">Contacto</a>
+    </div>
+  </div>
+</section>
+</Base>
