@@ -161,6 +161,9 @@ export default function MetroHero({
     function engageLock() {
       if (locked || typeof document === "undefined") return
       locked = true
+      // Phones only hand swipes to our handlers when native panning is off; it is switched back on
+      // in releaseLock, otherwise the page could never be scrolled by touch once the video ends.
+      section.style.touchAction = "none"
       lockedScrollY = window.scrollY
       const b = document.body.style
       b.position = "fixed"
@@ -175,6 +178,7 @@ export default function MetroHero({
     function releaseLock() {
       if (!locked || typeof document === "undefined") return
       locked = false
+      section.style.touchAction = ""
       const y = lockedScrollY
       const b = document.body.style
       b.position = ""
@@ -209,8 +213,11 @@ export default function MetroHero({
     // Only pin when the page loads at the hero (not when opened mid-page, e.g. via #contacto).
     if (atHero()) engageLock()
 
+    // A thumb swipe covers far less distance than a mouse wheel, so touch screens scrub faster.
+    const distance = window.matchMedia?.("(pointer: coarse)").matches ? Math.min(scrubDistance, 1700) : scrubDistance
+
     function addDelta(deltaY: number) {
-      const next = clamp(targetProgress + deltaY / scrubDistance, 0, 1)
+      const next = clamp(targetProgress + deltaY / distance, 0, 1)
       targetProgress = next
       if (targetProgress > 0.001) hasStartedScrolling = true
       return true
@@ -236,7 +243,7 @@ export default function MetroHero({
 
     // Keyboard scrolling keeps working while the page is pinned.
     const KEY_STEP: Record<string, number> = {
-      ArrowDown: 120, ArrowUp: -120, PageDown: 600, PageUp: -600, " ": 600, End: scrubDistance, Home: -scrubDistance,
+      ArrowDown: 120, ArrowUp: -120, PageDown: 600, PageUp: -600, " ": 600, End: 3200, Home: -3200,
     }
     const onKeyDown = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null
@@ -334,7 +341,6 @@ export default function MetroHero({
         width: "100%",
         overflow: "hidden",
         background: COL_BG,
-        touchAction: "none",
         ...style,
       }}
     >
@@ -362,7 +368,6 @@ export default function MetroHero({
           transformOrigin: "center center",
           willChange: "transform",
           transition: "opacity 0.6s ease",
-          touchAction: "none",
           pointerEvents: "none",
         }}
       />
