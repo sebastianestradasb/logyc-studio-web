@@ -1,7 +1,7 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import type { Lang, Page } from '../i18n';
+import { routes, type Lang, type Page } from '../i18n';
 import '../styles/global.css';
 
 interface Props {
@@ -13,6 +13,12 @@ interface Props {
   rootBase?: boolean;
 }
 const { lang, page, title, description, rootBase } = Astro.props;
+
+// Clean public URL of each language version (Cloudflare Pages serves /web, not /web.html).
+const site = (Astro.site ?? new URL('https://www.logycstudio.com')).origin;
+const cleanUrl = (file: string) => `${site}/${file === 'index.html' ? '' : file.replace(/\.html$/, '')}`;
+const canonical = cleanUrl(routes[page][lang]);
+const alternates = { es: cleanUrl(routes[page].es), en: cleanUrl(routes[page].en) };
 ---
 <!DOCTYPE html>
 <html lang={lang}>
@@ -22,6 +28,14 @@ const { lang, page, title, description, rootBase } = Astro.props;
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{title}</title>
 {description && <meta name="description" content={description}>}
+{rootBase
+  ? <meta name="robots" content="noindex">
+  : <>
+      <link rel="canonical" href={canonical}>
+      <link rel="alternate" hreflang="es" href={alternates.es}>
+      <link rel="alternate" hreflang="en" href={alternates.en}>
+      <link rel="alternate" hreflang="x-default" href={alternates.es}>
+    </>}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
