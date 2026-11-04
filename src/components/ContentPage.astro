@@ -1,0 +1,279 @@
+---
+import Base from '../layouts/Base.astro';
+import HeroGradient from './HeroGradient.astro';
+import Instagram from './Instagram.astro';
+import Reel from './Reel.astro';
+import AiPortfolio from './AiPortfolio.astro';
+import { routes, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+type Pkg = { name: string; tag: string; desc: string; items: string[]; featured?: boolean };
+
+const copy = {
+  es: {
+    title: 'Contenido con IA — LOGYC STUDIO',
+    description: 'Fotografía de producto, contenido para redes y video con IA para tu marca. Calidad de estudio, sin sesiones de fotos ni locaciones. Mira nuestro portafolio y paquetes.',
+    eyebrow: 'CONTENIDO CON IA',
+    h1a: 'Imagen y video profesional,',
+    h1b: 'sin set de fotografía.',
+    sub: 'Producimos fotos de producto, contenido para redes y video para tu marca con IA de última generación. Calidad de estudio, con la iluminación, los ángulos y el estilo que tu marca necesita.',
+    heroCta: 'Ver portafolio',
+    heroCta2: 'Ver paquetes',
+    whatEyebrow: 'QUÉ CREAMOS',
+    whatTitleA: 'Todo el contenido de tu marca,',
+    whatTitleB: 'sin shoots ni locaciones.',
+    types: [
+      { k: 'Fotografía de producto', h: 'Tu producto,<br>en cualquier escena.', p: 'Múltiples ángulos y escenarios: estudio, hogar, exterior o campaña, con la luz y el estilo de tu marca.' },
+      { k: 'Contenido para redes', h: 'Listo para<br>publicar.', p: 'Piezas en formato vertical, cuadrado y horizontal para Instagram, TikTok, Facebook y tu web.' },
+      { k: 'Video corto', h: 'Movimiento que<br>detiene el scroll.', p: 'Reels, anuncios y piezas de campaña creadas con IA, sin rodaje ni equipo de producción.' },
+    ],
+    feats: ['Alta resolución con logos legibles en cada pieza', 'Rondas de revisión definidas desde el inicio', 'Dirección de arte y criterio humano en cada entrega'],
+    portEyebrow: 'PORTAFOLIO',
+    portTitleA: 'Contenido real,',
+    portTitleB: 'creado con IA.',
+    portLead: 'Así se ve el trabajo que hacemos para marcas reales. Todo lo que ves aquí fue creado con IA, sin cámaras ni sets.',
+    videoLabel: 'Video con IA · KALMA',
+    videoTitle: 'Un reel de producto,<br>sin rodaje.',
+    videoText: 'Reel vertical para KALMA, marca de pantuflas, creado por completo con IA: escenas, movimiento y ritmo pensados para detener el scroll en redes.',
+    videoFeats: ['Formato vertical 9:16 para Reels y TikTok', 'Escenas y cámara dirigidas por nuestro equipo', 'Listo para publicar o pautar'],
+    videoHint: 'Toca el video para pausarlo y el ícono para activar el sonido.',
+    howEyebrow: 'CÓMO FUNCIONA',
+    howTitleA: 'De la idea',
+    howTitleB: 'a tus archivos.',
+    steps: [
+      ['Brief', 'Nos cuentas tu marca, tu producto y qué necesitas comunicar.'],
+      ['Concepto', 'Definimos estilo, escenarios y dirección visual alineados a tu identidad.'],
+      ['Producción', 'Generamos y refinamos cada pieza hasta que quede impecable.'],
+      ['Entrega', 'Recibes tus archivos en alta resolución, listos para publicar.'],
+    ],
+    howMore: 'Ver el proceso completo',
+    pkgEyebrow: 'PAQUETES',
+    pkgTitleA: 'Escoge cómo',
+    pkgTitleB: 'arrancar.',
+    popular: 'Más popular',
+    price: 'Cotización a medida',
+    quote: 'Cotizar',
+    pkgs: [
+      { name: 'Esencial', tag: 'Para arrancar con fuerza.', desc: 'Contenido profesional de forma consistente para tu marca.', items: ['Set de imágenes de producto en distintos ángulos', 'Entrega en alta resolución', '1 ronda de revisión'] },
+      { name: 'Profesional', tag: 'El equilibrio perfecto.', desc: 'Más volumen y variedad, ideal para marcas activas en redes.', items: ['Todo lo de Esencial', 'Mayor cantidad de piezas y escenarios', 'Formatos para múltiples plataformas', 'Piezas de video corto', '2 rondas de revisión'], featured: true },
+      { name: 'Premium', tag: 'Producción completa.', desc: 'Contenido a escala para campañas y lanzamientos.', items: ['Todo lo de Profesional', 'Máximo volumen de imagen y video', 'Dirección de arte personalizada', 'Prioridad en tiempos de entrega', '3 rondas de revisión'] },
+    ] as Pkg[],
+    note: '<b>[ nota ]</b> Infografías y piezas que requieren copy provisto por el cliente se cotizan por separado.',
+    faqEyebrow: 'PREGUNTAS FRECUENTES',
+    faqTitleA: 'Lo que todos',
+    faqTitleB: 'preguntan.',
+    faq: [
+      ['¿El contenido con IA se ve real?', 'Sí. Trabajamos con las mejores herramientas del mercado y cada pieza pasa por dirección y refinamiento humano. El objetivo es que se vea profesional, no artificial.'],
+      ['¿Qué necesito para empezar?', 'Fotos claras de tu producto, tu logo y, si las tienes, referencias de estilos que te gusten. Con eso definimos el concepto.'],
+      ['¿Cuántas revisiones tengo?', 'Cada paquete incluye un número definido de rondas de revisión: 1 en Esencial, 2 en Profesional y 3 en Premium.'],
+      ['¿Cuánto se demora un proyecto?', 'Depende del alcance, pero trabajamos en días, no en semanas. Te damos un tiempo estimado en la cotización.'],
+    ],
+    ctaEyebrow: 'EMPECEMOS',
+    ctaTitleA: '¿Listo para verte',
+    ctaTitleB: 'como del futuro?',
+    ctaText: 'Cuéntanos de tu marca y te enviamos una cotización sin compromiso.',
+    ctaBtn: 'Empezar ahora',
+  },
+  en: {
+    title: 'AI Content — LOGYC STUDIO',
+    description: 'Product photography, social content, and video made with AI for your brand. Studio quality, with no photo shoots or locations. See our portfolio and packages.',
+    eyebrow: 'AI CONTENT',
+    h1a: 'Professional image and video,',
+    h1b: 'no photo shoot required.',
+    sub: 'We produce product photos, social content, and video for your brand with cutting-edge AI. Studio quality, with the lighting, angles, and style your brand needs.',
+    heroCta: 'See portfolio',
+    heroCta2: 'See packages',
+    whatEyebrow: 'WHAT WE CREATE',
+    whatTitleA: 'All your brand content,',
+    whatTitleB: 'no shoots or locations.',
+    types: [
+      { k: 'Product photography', h: 'Your product,<br>in any scene.', p: 'Multiple angles and settings: studio, home, outdoors, or campaign, with your brand’s light and style.' },
+      { k: 'Social content', h: 'Ready<br>to publish.', p: 'Pieces in vertical, square, and horizontal formats for Instagram, TikTok, Facebook, and your website.' },
+      { k: 'Short video', h: 'Motion that<br>stops the scroll.', p: 'Reels, ads, and campaign pieces made with AI, with no film shoot or production crew.' },
+    ],
+    feats: ['High resolution with legible logos in every piece', 'Revision rounds defined from the start', 'Art direction and human judgment in every delivery'],
+    portEyebrow: 'PORTFOLIO',
+    portTitleA: 'Real content,',
+    portTitleB: 'made with AI.',
+    portLead: 'This is the work we do for real brands. Everything you see here was made with AI, with no cameras or sets.',
+    videoLabel: 'AI video · KALMA',
+    videoTitle: 'A product reel,<br>no film shoot.',
+    videoText: 'A vertical reel for KALMA, a slipper brand, made entirely with AI: scenes, motion, and pacing designed to stop the scroll on social media.',
+    videoFeats: ['Vertical 9:16 format for Reels and TikTok', 'Scenes and camera directed by our team', 'Ready to post or run as an ad'],
+    videoHint: 'Tap the video to pause it and the icon to turn the sound on.',
+    howEyebrow: 'HOW IT WORKS',
+    howTitleA: 'From the idea',
+    howTitleB: 'to your files.',
+    steps: [
+      ['Brief', 'You tell us about your brand, your product, and what you need to communicate.'],
+      ['Concept', 'We define style, settings, and visual direction aligned with your identity.'],
+      ['Production', "We generate and refine every piece until it's flawless."],
+      ['Delivery', 'You receive your files in high resolution, ready to publish.'],
+    ],
+    howMore: 'See the full process',
+    pkgEyebrow: 'PACKAGES',
+    pkgTitleA: 'Choose how',
+    pkgTitleB: 'to start.',
+    popular: 'Most popular',
+    price: 'Custom quote',
+    quote: 'Get a quote',
+    pkgs: [
+      { name: 'Essential', tag: 'To start strong.', desc: 'Consistent professional content for your brand.', items: ['Set of product images in different angles', 'High-resolution delivery', '1 revision round'] },
+      { name: 'Professional', tag: 'The perfect balance.', desc: 'More volume and variety, ideal for brands active on social media.', items: ['Everything in Essential', 'More pieces and settings', 'Formats for multiple platforms', 'Short video pieces', '2 revision rounds'], featured: true },
+      { name: 'Premium', tag: 'Full production.', desc: 'Content at scale for campaigns and launches.', items: ['Everything in Professional', 'Maximum volume of image and video', 'Custom art direction', 'Priority turnaround', '3 revision rounds'] },
+    ] as Pkg[],
+    note: '<b>[ note ]</b> Infographics and pieces requiring client-provided copy are quoted separately.',
+    faqEyebrow: 'FAQ',
+    faqTitleA: 'What everyone',
+    faqTitleB: 'asks.',
+    faq: [
+      ['Does AI content look real?', 'Yes. We work with the best tools on the market, and every piece goes through human direction and refinement. The goal is for it to look professional, not artificial.'],
+      ['What do I need to get started?', 'Clear photos of your product, your logo, and, if you have them, references of styles you like. With that we define the concept.'],
+      ['How many revisions do I get?', 'Each package includes a set number of revision rounds: 1 on Essential, 2 on Professional, and 3 on Premium.'],
+      ['How long does a project take?', 'It depends on scope, but we work in days, not weeks. We give you an estimated timeline in the quote.'],
+    ],
+    ctaEyebrow: "LET'S START",
+    ctaTitleA: 'Ready to look',
+    ctaTitleB: 'like the future?',
+    ctaText: "Tell us about your brand and we'll send you a no-obligation quote.",
+    ctaBtn: 'Start now',
+  },
+}[lang];
+
+const pad = (i: number) => String(i + 1).padStart(2, '0');
+const contactPage = routes.contact[lang];
+---
+<Base lang={lang} page="content" title={copy.title} description={copy.description}>
+<!-- HERO -->
+<section class="hero page-hero has-gradient" id="top">
+  <HeroGradient />
+  <div class="wrap hero-inner">
+    <div class="hero-eyebrow"><span class="eyebrow"><span class="bk">[</span> {copy.eyebrow} <span class="bk">]</span></span></div>
+    <h1>
+      <span class="reveal-line"><span style="animation-delay:.35s">{copy.h1a}</span></span>
+      <span class="reveal-line"><span class="lime" style="animation-delay:.5s">{copy.h1b}</span></span>
+    </h1>
+    <p class="sub">{copy.sub}</p>
+    <div class="cta-row">
+      <a href="#portafolio" class="btn btn-primary">{copy.heroCta} <span class="arw">↓</span></a>
+      <a href="#paquetes" class="btn btn-ghost">{copy.heroCta2}</a>
+    </div>
+  </div>
+  <div class="scroll-hint"><span>Scroll</span><span class="bar"></span></div>
+</section>
+
+<!-- 01 QUÉ CREAMOS -->
+<section class="block" id="que-creamos">
+  <div class="wrap">
+    <div class="sec-head fx"><span class="sec-num">[ 01 ]</span><span class="eyebrow"><span class="bk">/</span> {copy.whatEyebrow}</span></div>
+    <h2 class="sec-title fx">{copy.whatTitleA}<br><span class="lime">{copy.whatTitleB}</span></h2>
+    <div class="types">
+      {copy.types.map((t) => (
+        <div class="type fx"><div class="k">{t.k}</div><h4 set:html={t.h} /><p>{t.p}</p></div>
+      ))}
+    </div>
+    <ul class="feat content-feats fx">
+      {copy.feats.map((f) => <li>{f}</li>)}
+    </ul>
+  </div>
+</section>
+
+<!-- 02 PORTAFOLIO -->
+<section class="svc" id="portafolio">
+  <div class="wrap">
+    <div class="sec-head fx"><span class="sec-num">[ 02 ]</span><span class="eyebrow"><span class="bk">/</span> {copy.portEyebrow}</span></div>
+    <h2 class="sec-title fx">{copy.portTitleA}<br><span class="lime">{copy.portTitleB}</span></h2>
+    <p class="lead fx">{copy.portLead}</p>
+
+    <!-- Video -->
+    <div class="svc-top content-video">
+      <div class="svc-visual has-reel fx" id="visual1">
+        <span class="bracket l">[</span><span class="bracket r">]</span>
+        <div class="pixel-orbit" id="orbit1"></div>
+        <Reel lang={lang} />
+      </div>
+      <div class="svc-body fx">
+        <div class="mlabel">{copy.videoLabel}</div>
+        <h3 set:html={copy.videoTitle} />
+        <p class="d">{copy.videoText}</p>
+        <ul class="feat">
+          {copy.videoFeats.map((f) => <li>{f}</li>)}
+        </ul>
+        <p class="note">{copy.videoHint}</p>
+      </div>
+    </div>
+
+    <!-- Photography -->
+    <AiPortfolio lang={lang} />
+  </div>
+</section>
+
+<!-- 03 CÓMO FUNCIONA -->
+<section class="block" id="como-funciona">
+  <div class="wrap">
+    <div class="sec-head fx"><span class="sec-num">[ 03 ]</span><span class="eyebrow"><span class="bk">/</span> {copy.howEyebrow}</span></div>
+    <h2 class="sec-title fx">{copy.howTitleA} <span class="lime">{copy.howTitleB}</span></h2>
+    <div class="steps">
+      {copy.steps.map(([h, p], i) => (
+        <div class="step fx"><div class="n">{pad(i)}</div><h4>{h}</h4><p>{p}</p></div>
+      ))}
+    </div>
+    <div class="proc-more fx"><a href={`${routes.process[lang]}#proceso-ia`} class="btn btn-ghost">{copy.howMore} <span class="arw">→</span></a></div>
+  </div>
+</section>
+
+<!-- 04 PAQUETES -->
+<section class="svc" id="paquetes">
+  <div class="wrap">
+    <div class="sec-head fx"><span class="sec-num">[ 04 ]</span><span class="eyebrow"><span class="bk">/</span> {copy.pkgEyebrow}</span></div>
+    <h2 class="sec-title fx">{copy.pkgTitleA} <span class="lime">{copy.pkgTitleB}</span></h2>
+    <div class="pkgs">
+      {copy.pkgs.map((p) => (
+        <div class={p.featured ? 'pkg feat-pkg fx' : 'pkg fx'}>
+          {p.featured && <span class="pop">{copy.popular}</span>}
+          <div class="pk-name">{p.name}</div>
+          <div class="pk-tag">{p.tag}</div>
+          <div class="pk-desc">{p.desc}</div>
+          <div class="pk-price">{copy.price}</div>
+          <ul>{p.items.map((it) => <li>{it}</li>)}</ul>
+          {p.featured
+            ? <a href={contactPage} class="btn btn-primary">{copy.quote} <span class="arw">→</span></a>
+            : <a href={contactPage} class="btn btn-ghost">{copy.quote}</a>}
+        </div>
+      ))}
+    </div>
+    <p class="note fx" set:html={copy.note} />
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="block faq" id="faq">
+  <div class="wrap">
+    <div class="sec-head fx"><span class="eyebrow"><span class="bk">[</span> {copy.faqEyebrow} <span class="bk">]</span></span></div>
+    <h2 class="sec-title fx">{copy.faqTitleA} <span class="lime">{copy.faqTitleB}</span></h2>
+    <div class="acc" id="acc">
+      {copy.faq.map(([q, a]) => (
+        <div class="acc-item"><button class="acc-q">{q} <span class="ico">+</span></button><div class="acc-a"><p>{a}</p></div></div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="contacto">
+  <div class="cta-glow"></div>
+  <div class="wrap">
+    <span class="eyebrow fx" style="margin-bottom:26px;display:inline-flex"><span class="bk">[</span> {copy.ctaEyebrow} <span class="bk">]</span></span>
+    <h2 class="fx">{copy.ctaTitleA}<br><span class="lime">{copy.ctaTitleB}</span></h2>
+    <p class="fx">{copy.ctaText}</p>
+    <div class="cta-row fx">
+      <a href={contactPage} class="btn btn-primary">{copy.ctaBtn} <span class="arw">→</span></a>
+    </div>
+    <Instagram lang={lang} variant="cta" />
+  </div>
+</section>
+</Base>

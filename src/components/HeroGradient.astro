@@ -1,0 +1,14 @@
+---
+// Animated LOGYC-green gradient (Velaris) used as the background of the inner pages' heroes.
+// Place it first inside a `.hero.has-gradient` section; the section's fades blend it into the page.
+import Velaris from './ui/velaris';
+---
+<Velaris
+  client:load
+  className="hero-gradient"
+  height="100%"
+  bg="#0A0A0A"
+  colors={["#1F3A06", "#AFFC30", "#4E7A0E", "#0A0A0A"]}
+  speed={1.6}
+  grain={0.35}
+/>

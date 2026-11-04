@@ -1,10 +1,12 @@
 export type Lang = 'es' | 'en';
-export type Page = 'home' | 'web' | 'contact';
+export type Page = 'home' | 'web' | 'content' | 'process' | 'contact';
 
 // Output file of each page in each language; the ES/EN switch maps between them.
 export const routes: Record<Page, Record<Lang, string>> = {
   home: { es: 'index.html', en: 'en.html' },
   web: { es: 'web.html', en: 'web-en.html' },
+  content: { es: 'contenido.html', en: 'contenido-en.html' },
+  process: { es: 'proceso.html', en: 'proceso-en.html' },
   contact: { es: 'contacto.html', en: 'contacto-en.html' },
 };
 
@@ -25,7 +27,7 @@ export const ui = {
     menu: 'Menú',
     cta: 'Empezar proyecto',
     footer: 'contenido + web con IA',
-    nav: { servicios: 'Servicios', web: 'Web', contenido: 'Contenido IA', proceso: 'Proceso', faq: 'FAQ', contacto: 'Contacto' },
+    nav: { web: 'Web', contenido: 'Contenido IA', proceso: 'Proceso', faq: 'FAQ', contacto: 'Contacto' },
   },
   en: {
     followUs: 'See more of our work on Instagram',
@@ -34,6 +36,6 @@ export const ui = {
     menu: 'Menu',
     cta: 'Start a project',
     footer: 'content + web with AI',
-    nav: { servicios: 'Services', web: 'Web', contenido: 'AI Content', proceso: 'Process', faq: 'FAQ', contacto: 'Contact' },
+    nav: { web: 'Web', contenido: 'AI Content', proceso: 'Process', faq: 'FAQ', contacto: 'Contact' },
   },
 } as const;

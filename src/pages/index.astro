@@ -1,20 +1,18 @@
 ---
 import Base from '../layouts/Base.astro';
+import HeroGradient from '../components/HeroGradient.astro';
 import Instagram from '../components/Instagram.astro';
 import Reel from '../components/Reel.astro';
-import AiPortfolio from '../components/AiPortfolio.astro';
-import HeroBackground from '../components/react/HeroBackground';
+import MetroHero from '../components/ui/scroll-locked-video-hero';
 import ScrollWordReveal from '../components/react/ScrollWordReveal';
 import StackedSteps from '../components/react/StackedSteps';
 import WhyBento from '../components/react/WhyBento';
-import { ContainerScroll } from '../components/ui/container-scroll-animation';
 ---
 <Base lang="es" page="home" title="LOGYC STUDIO — Diseño web + Contenido con IA">
 <!-- HERO -->
-<section class="hero" id="top">
-  <HeroBackground client:load />
-  <div class="hero-glow" id="heroGlow"></div>
-  <div class="wrap hero-inner">
+<section class="hero hero-video" id="top">
+  <MetroHero client:load videoSrc="/video/hero-city.mp4" posterSrc="/img/hero-city-poster.jpg" tagline="Para marcas que quieren verse como del futuro." scrollHint="SCROLL" signature={false}>
+  <div slot="title" class="wrap hero-inner">
     <div class="hero-eyebrow"><span class="eyebrow"><span class="bk">[</span> WEB + CONTENIDO IA <span class="bk">]</span></span></div>
     <h1>
       <span class="reveal-line"><span style="animation-delay:.35s">Webs que convierten.</span></span>
@@ -30,27 +28,7 @@ import { ContainerScroll } from '../components/ui/container-scroll-animation';
       <a href="web.html" class="btn btn-ghost">Ver paquetes web</a>
     </div>
   </div>
-  <div class="scroll-hint"><span>Scroll</span><span class="bar"></span></div>
-</section>
-
-<!-- MARQUEE -->
-<div class="marquee" aria-hidden="true">
-  <div class="marquee-track">
-    <span><b>FOTOGRAFÍA DE PRODUCTO</b> <i class="dot"></i> <b>VIDEO CON IA</b> <i class="dot"></i> <b>CONTENIDO PARA REDES</b> <i class="dot"></i> <b>LANDING PAGES</b> <i class="dot"></i> <b>SITIOS DE MARCA</b> <i class="dot"></i> <b>E-COMMERCE</b> <i class="dot"></i></span>
-    <span><b>FOTOGRAFÍA DE PRODUCTO</b> <i class="dot"></i> <b>VIDEO CON IA</b> <i class="dot"></i> <b>CONTENIDO PARA REDES</b> <i class="dot"></i> <b>LANDING PAGES</b> <i class="dot"></i> <b>SITIOS DE MARCA</b> <i class="dot"></i> <b>E-COMMERCE</b> <i class="dot"></i></span>
-  </div>
-</div>
-
-<!-- SHOWCASE -->
-<section class="showcase">
-  <ContainerScroll client:load>
-    <div slot="titleComponent" class="showcase-head">
-      <span class="eyebrow"><span class="bk">[</span> TRABAJO REAL <span class="bk">]</span></span>
-      <h2 class="sec-title">Así se ve lo que <span class="lime">construimos.</span></h2>
-    </div>
-    <img src="/img/portfolio/precision-garage-desktop.jpg" width="1100" height="6316" alt="Sitio web de Precision Garage diseñado por LOGYC" class="showcase-shot" draggable="false">
-  </ContainerScroll>
-  <div class="showcase-link"><a href="#portafolio" class="btn btn-ghost">Ver el caso completo <span class="arw">↓</span></a></div>
+  </MetroHero>
 </section>
 
 <!-- INTRO / SERVICIOS -->
@@ -102,12 +80,24 @@ import { ContainerScroll } from '../components/ui/container-scroll-animation';
         </ul>
         <a href="web.html" class="btn btn-primary svc-cta">Ver paquetes y precios <span class="arw">→</span></a>
       </div>
-      <div class="svc-visual fx" id="visual2">
-        <span class="bracket l">[</span><span class="bracket r">]</span>
-        <div class="pixel-orbit" id="orbit2"></div>
-        <div class="core">
-          <div class="big">WEB</div>
-          <div class="lbl">diseño + desarrollo</div>
+      <!-- Live preview of a real project (Precision Garage): both screens scroll on their own or by hand -->
+      <div class="svc-showcase fx">
+        <div class="case-stage">
+          <div class="browser">
+            <div class="browser-bar"><i></i><i></i><i></i><span class="browser-url">https://<b>precisiongarage.com.co</b></span></div>
+            <div class="browser-screen autoscroll" data-speed="70" tabindex="0" aria-label="Vista de escritorio del sitio web de Precision Garage">
+              <img src="/img/portfolio/precision-garage-desktop.jpg" width="1100" height="6316" loading="lazy" alt="Vista de escritorio del sitio web de Precision Garage">
+            </div>
+          </div>
+          <div class="phone">
+            <div class="phone-screen autoscroll" data-speed="45" tabindex="0" aria-label="Vista móvil del sitio web de Precision Garage">
+              <img src="/img/portfolio/precision-garage-mobile.jpg" width="600" height="7200" loading="lazy" alt="Vista móvil del sitio web de Precision Garage">
+            </div>
+          </div>
+        </div>
+        <div class="showcase-foot">
+          <div class="case-hint"><span class="dot"></span>Desliza dentro de la pantalla para recorrer el sitio</div>
+          <a href="https://precisiongarage.com.co/" target="_blank" rel="noopener" class="showcase-live">Ver Precision Garage en vivo <span class="arw">↗</span></a>
         </div>
       </div>
     </div>
@@ -143,109 +133,11 @@ import { ContainerScroll } from '../components/ui/container-scroll-animation';
           <li>Alta resolución con logos legibles en cada pieza</li>
           <li>Rondas de revisión definidas desde el inicio</li>
         </ul>
-      </div>
-    </div>
-
-    <!-- AI photography portfolio -->
-    <AiPortfolio lang="es" />
-
-    <!-- how it works -->
-    <div class="steps">
-      <div class="step fx"><div class="n">01</div><h4>Brief</h4><p>Nos cuentas tu marca, tu producto y qué necesitas comunicar.</p></div>
-      <div class="step fx"><div class="n">02</div><h4>Concepto</h4><p>Definimos estilo, escenarios y dirección visual alineados a tu identidad.</p></div>
-      <div class="step fx"><div class="n">03</div><h4>Producción</h4><p>Generamos y refinamos cada pieza hasta que quede impecable.</p></div>
-      <div class="step fx"><div class="n">04</div><h4>Entrega</h4><p>Recibes tus archivos en alta resolución, listos para publicar.</p></div>
-    </div>
-
-    <!-- packages -->
-    <div class="sec-head fx" style="margin-top:96px">
-      <span class="eyebrow"><span class="bk">[</span> PAQUETES <span class="bk">]</span></span>
-    </div>
-    <div class="pkgs">
-      <div class="pkg fx">
-        <div class="pk-name">Esencial</div>
-        <div class="pk-tag">Para arrancar con fuerza.</div>
-        <div class="pk-desc">Contenido profesional de forma consistente para tu marca.</div>
-        <div class="pk-price">Cotización a medida</div>
-        <ul>
-          <li>Set de imágenes de producto en distintos ángulos</li>
-          <li>Entrega en alta resolución</li>
-          <li>1 ronda de revisión</li>
-        </ul>
-        <a href="#contacto" class="btn btn-ghost">Cotizar</a>
-      </div>
-      <div class="pkg feat-pkg fx">
-        <span class="pop">Más popular</span>
-        <div class="pk-name">Profesional</div>
-        <div class="pk-tag">El equilibrio perfecto.</div>
-        <div class="pk-desc">Más volumen y variedad, ideal para marcas activas en redes.</div>
-        <div class="pk-price">Cotización a medida</div>
-        <ul>
-          <li>Todo lo de Esencial</li>
-          <li>Mayor cantidad de piezas y escenarios</li>
-          <li>Formatos para múltiples plataformas</li>
-          <li>Piezas de video corto</li>
-          <li>2 rondas de revisión</li>
-        </ul>
-        <a href="#contacto" class="btn btn-primary">Cotizar <span class="arw">→</span></a>
-      </div>
-      <div class="pkg fx">
-        <div class="pk-name">Premium</div>
-        <div class="pk-tag">Producción completa.</div>
-        <div class="pk-desc">Contenido a escala para campañas y lanzamientos.</div>
-        <div class="pk-price">Cotización a medida</div>
-        <ul>
-          <li>Todo lo de Profesional</li>
-          <li>Máximo volumen de imagen y video</li>
-          <li>Dirección de arte personalizada</li>
-          <li>Prioridad en tiempos de entrega</li>
-          <li>3 rondas de revisión</li>
-        </ul>
-        <a href="#contacto" class="btn btn-ghost">Cotizar</a>
-      </div>
-    </div>
-    <p class="note fx"><b>[ nota ]</b> Infografías y piezas que requieren copy provisto por el cliente se cotizan por separado.</p>
-  </div>
-</section>
-
-<!-- PORTAFOLIO -->
-<section class="svc work" id="portafolio">
-  <div class="wrap">
-    <div class="sec-head fx"><span class="eyebrow"><span class="bk">[</span> PORTAFOLIO <span class="bk">]</span></span></div>
-    <h2 class="sec-title fx">Proyectos reales,<br><span class="lime">funcionando.</span></h2>
-    <p class="lead fx">Así se ve un sitio LOGYC en el mundo real. Explóralo aquí mismo o visítalo en vivo.</p>
-    <div class="case">
-      <div class="fx">
-        <div class="case-stage">
-          <div class="browser">
-            <div class="browser-bar"><i></i><i></i><i></i><span class="browser-url">https://<b>precisiongarage.com.co</b></span></div>
-            <div class="browser-screen autoscroll" data-speed="70" tabindex="0" aria-label="Vista de escritorio del sitio web de Precision Garage">
-              <img src="/img/portfolio/precision-garage-desktop.jpg" width="1100" height="6316" loading="lazy" alt="Vista de escritorio del sitio web de Precision Garage">
-            </div>
-          </div>
-          <div class="phone">
-            <div class="phone-screen autoscroll" data-speed="45" tabindex="0" aria-label="Vista móvil del sitio web de Precision Garage">
-              <img src="/img/portfolio/precision-garage-mobile.jpg" width="600" height="7200" loading="lazy" alt="Vista móvil del sitio web de Precision Garage">
-            </div>
-          </div>
-        </div>
-        <div class="case-hint"><span class="dot"></span>Desliza dentro de la pantalla para recorrer el sitio</div>
-      </div>
-      <div class="case-info fx">
-        <div class="mlabel">Diseño web · Bogotá</div>
-        <h3>Precision Garage</h3>
-        <p class="d">Taller especializado en Mercedes-Benz en el norte de Bogotá, con técnicos formados por Daimler Colombia. Diseñamos su sitio completo para mostrar su experiencia, explicar cada servicio y convertir visitas en citas por WhatsApp.</p>
-        <div class="chips"><span>Sitio de 8 páginas</span><span>Home interactivo</span><span>Responsive</span><span>SEO local</span><span>Textos a medida</span></div>
-        <ul class="feat"><li>Home interactivo con animaciones al hacer scroll</li><li>Una página por servicio: mantenimiento, diagnóstico y servicio express</li><li>Agendamiento directo por WhatsApp, con mensaje listo para enviar</li><li>Reseñas de Google (5.0 ★) y galería de trabajos para generar confianza</li><li>SEO local con datos estructurados para aparecer en Google</li></ul>
-        <div class="case-actions">
-          <a href="https://precisiongarage.com.co/" target="_blank" rel="noopener" class="btn btn-primary">Ver sitio en vivo <span class="arw">↗</span></a>
-          <a href="web.html" class="btn btn-ghost">Ver paquetes web</a>
-        </div>
+        <a href="contenido.html" class="btn btn-primary svc-cta">Ver contenido IA <span class="arw">→</span></a>
       </div>
     </div>
   </div>
 </section>
-<!-- /PORTAFOLIO -->
 
 <!-- WHY -->
 <section class="block why">
@@ -261,11 +153,16 @@ import { ContainerScroll } from '../components/ui/container-scroll-animation';
 <!-- PROCESS -->
 <section class="block proc" id="proceso">
   <div class="wrap">
-    <div class="sec-head fx">
-      <span class="eyebrow"><span class="bk">[</span> CÓMO TRABAJAMOS <span class="bk">]</span></span>
+    <div class="proc-stage">
+    <div class="proc-pin">
+      <div class="sec-head fx">
+        <span class="eyebrow"><span class="bk">[</span> CÓMO TRABAJAMOS <span class="bk">]</span></span>
+      </div>
+      <h2 class="sec-title fx">Simple, claro y <span class="lime">sin vueltas.</span></h2>
     </div>
-    <h2 class="sec-title fx">Simple, claro y <span class="lime">sin vueltas.</span></h2>
-    <StackedSteps client:visible steps={[{"title": "Hablamos", "text": "Nos cuentas qué necesitas y hacia dónde va tu marca."}, {"title": "Cotizamos", "text": "Te enviamos una propuesta clara, con alcance y tiempos definidos."}, {"title": "Producimos", "text": "Creamos, tú revisas dentro de las rondas acordadas."}, {"title": "Entregamos", "text": "Recibes todo listo para usar y salir al mundo."}]} />
+    <StackedSteps client:visible steps={[{"title": "Hablamos", "text": "Nos cuentas qué necesitas y hacia dónde va tu marca."}, {"title": "Cotizamos", "text": "Te enviamos una propuesta clara, con alcance y tiempos definidos."}, {"title": "Producimos", "text": "Creamos, tú revisas dentro de las rondas acordadas."}, {"title": "Entregamos", "text": "Recibes todo listo para usar y salir al mundo."}]} top="var(--stack-top, 96px)" />
+    </div>
+    <div class="proc-more fx"><a href="proceso.html" class="btn btn-ghost">Ver el proceso completo <span class="arw">→</span></a></div>
   </div>
 </section>
 
@@ -277,18 +174,22 @@ import { ContainerScroll } from '../components/ui/container-scroll-animation';
     </div>
     <h2 class="sec-title fx">Lo que todos <span class="lime">preguntan.</span></h2>
     <div class="acc" id="acc">
-      <div class="acc-item"><button class="acc-q">¿El contenido con IA se ve real? <span class="ico">+</span></button><div class="acc-a"><p>Sí. Trabajamos con las mejores herramientas del mercado y cada pieza pasa por dirección y refinamiento humano. El objetivo es que se vea profesional, no artificial.</p></div></div>
-      <div class="acc-item"><button class="acc-q">¿Cuántas revisiones tengo? <span class="ico">+</span></button><div class="acc-a"><p>Cada paquete incluye un número definido de rondas de revisión, acordado desde el inicio. Así evitamos sorpresas y mantenemos el proyecto ágil.</p></div></div>
-      <div class="acc-item"><button class="acc-q">¿Cuánto se demora un proyecto? <span class="ico">+</span></button><div class="acc-a"><p>Depende del alcance, pero trabajamos en días, no en semanas. Te damos un tiempo estimado en la cotización.</p></div></div>
-      <div class="acc-item"><button class="acc-q">¿Puedo pedir solo contenido o solo la web? <span class="ico">+</span></button><div class="acc-a"><p>Claro. Cada servicio funciona por separado — aunque juntos rinden mejor.</p></div></div>
+      <div class="acc-item"><button class="acc-q">¿Qué servicios ofrecen? <span class="ico">+</span></button><div class="acc-a"><p>Dos: diseño de sitios web y contenido con IA (fotografía de producto, contenido para redes y video corto). Puedes contratarlos por separado o juntos.</p></div></div>
+      <div class="acc-item"><button class="acc-q">¿Cuánto cuesta un sitio web? <span class="ico">+</span></button><div class="acc-a"><p>Tenemos dos paquetes con precio fijo: Landing por $1.500.000 COP y Profesional por $2.500.000 COP. Ambos incluyen el primer año de dominio, diseño adaptado a celular, SEO local y botón de WhatsApp. <a href="web.html#paquetes">Ver paquetes web</a>.</p></div></div>
+      <div class="acc-item"><button class="acc-q">¿En cuánto tiempo está listo mi sitio? <span class="ico">+</span></button><div class="acc-a"><p>El plan Landing se entrega en 3 a 5 días hábiles y el Profesional en 7 a 10 días hábiles.</p></div></div>
+      <div class="acc-item"><button class="acc-q">¿El contenido con IA se ve real? <span class="ico">+</span></button><div class="acc-a"><p>Sí. Trabajamos con las mejores herramientas del mercado y cada pieza pasa por dirección y refinamiento humano. El objetivo es que se vea profesional, no artificial. <a href="contenido.html#portafolio">Mira nuestro portafolio</a>.</p></div></div>
+      <div class="acc-item"><button class="acc-q">¿Cuánto cuesta el contenido con IA? <span class="ico">+</span></button><div class="acc-a"><p>Se cotiza a la medida según el volumen de piezas y formatos. Tenemos tres paquetes: Esencial, Profesional y Premium. <a href="contenido.html#paquetes">Ver paquetes de contenido</a>.</p></div></div>
+      <div class="acc-item"><button class="acc-q">¿Cuántas revisiones tengo? <span class="ico">+</span></button><div class="acc-a"><p>En sitios web, 1 ronda de ajustes en Landing y 2 en Profesional. En contenido IA, 1 ronda en Esencial, 2 en Profesional y 3 en Premium. Siempre definidas desde el inicio.</p></div></div>
+      <div class="acc-item"><button class="acc-q">¿Cómo se paga un sitio web? <span class="ico">+</span></button><div class="acc-a"><p>En dos partes iguales por transferencia bancaria: 50% antes de empezar y 50% al momento de la entrega.</p></div></div>
+      <div class="acc-item"><button class="acc-q">¿Puedo pedir solo contenido o solo la web? <span class="ico">+</span></button><div class="acc-a"><p>Claro. Cada servicio funciona por separado, aunque juntos rinden mejor: los dos planes web ya incluyen fotos de tu negocio creadas con IA.</p></div></div>
       <div class="acc-item"><button class="acc-q">¿Trabajan con marcas fuera de Colombia? <span class="ico">+</span></button><div class="acc-a"><p>Sí. Trabajamos de forma remota y podemos entregar contenido y sitios en español e inglés.</p></div></div>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
-<section class="cta" id="contacto">
-  <div class="cta-glow"></div>
+<section class="cta cta-gradient" id="contacto">
+  <HeroGradient />
   <div class="wrap">
     <span class="eyebrow fx" style="margin-bottom:26px;display:inline-flex"><span class="bk">[</span> EMPECEMOS <span class="bk">]</span></span>
     <h2 class="fx">¿Listo para verte<br>como del <span class="lime">futuro?</span></h2>

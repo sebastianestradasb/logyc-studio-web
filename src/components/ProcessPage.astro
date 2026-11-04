@@ -1,0 +1,240 @@
+---
+import Base from '../layouts/Base.astro';
+import HeroGradient from './HeroGradient.astro';
+import Instagram from './Instagram.astro';
+import StackedSteps from './react/StackedSteps';
+import { routes, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+type Step = { title: string; tag: string; text: string };
+
+const copy = {
+  es: {
+    title: 'Proceso — LOGYC STUDIO',
+    description: 'Así trabajamos: el paso a paso para crear tu sitio web y tu contenido con IA, desde la primera conversación hasta la entrega.',
+    eyebrow: 'PROCESO',
+    h1a: 'Así trabajamos,',
+    h1b: 'paso a paso.',
+    sub: 'Desde la primera conversación hasta la entrega final, sabes en qué etapa va tu proyecto, qué necesitamos de ti y cuándo lo recibes.',
+    tracks: [
+      { id: 'proceso-web', num: '01', label: 'Sitios web', title: 'Tu sitio web', text: 'De la idea a tu sitio publicado en 3 a 10 días hábiles.' },
+      { id: 'proceso-ia', num: '02', label: 'Contenido IA', title: 'Tu contenido con IA', text: 'Fotos y videos de tu marca, con dirección y criterio humano.' },
+    ],
+    see: 'Ver proceso',
+    rulesEyebrow: 'CÓMO TRABAJAMOS',
+    rulesTitleA: 'Reglas claras',
+    rulesTitleB: 'desde el día uno.',
+    rules: [
+      ['Alcance definido', 'Antes de empezar sabes qué incluye tu proyecto, cuánto cuesta y cuándo lo recibes.'],
+      ['Criterio humano', 'La IA acelera la producción. Cada decisión de diseño y cada pieza pasa por nuestro equipo.'],
+      ['Rondas acordadas', 'Las revisiones se definen desde el inicio. Así el proyecto avanza sin vueltas.'],
+      ['Comunicación directa', 'Hablas con quien hace tu proyecto y sabes en qué va en cada etapa.'],
+    ],
+    webEyebrow: 'SITIOS WEB',
+    webTitleA: 'De la idea a tu sitio,',
+    webTitleB: 'en días.',
+    webLead: 'Plan Landing en 3 a 5 días hábiles. Plan Profesional en 7 a 10 días hábiles.',
+    webSteps: [
+      { title: 'Conversación', tag: 'Inicio', text: 'Nos cuentas de tu negocio, a quién le vendes y qué quieres lograr. Te recomendamos el paquete que mejor se ajusta.' },
+      { title: 'Confirmación y primer pago', tag: 'Inicio', text: 'Confirmas el paquete y pagas el 50% por transferencia bancaria. Con eso agendamos tu fecha de entrega.' },
+      { title: 'Material y dominio', tag: 'Inicio', text: 'Nos compartes tu logo, fotos de tus trabajos y los datos del negocio. Definimos juntos tu dirección web; el primer año del dominio está incluido.' },
+      { title: 'Estructura y textos', tag: 'Producción', text: 'Organizamos las secciones y los textos para que cada visita termine en una cotización. En el plan Profesional redactamos todo el contenido.' },
+      { title: 'Diseño y desarrollo', tag: 'Producción', text: 'Diseñamos y construimos tu sitio: adaptado a celular, con SEO local, botón de WhatsApp y fotos de tu negocio creadas con IA.' },
+      { title: 'Revisión en vivo', tag: 'Revisión', text: 'Te mostramos el sitio funcionando en internet y nos pides los ajustes: 1 ronda en Landing, 2 en Profesional.' },
+      { title: 'Publicación y entrega', tag: 'Entrega', text: 'Pagas el 50% restante y tu sitio queda publicado en tu dominio. Si quieres, lo seguimos cuidando con el plan de mantenimiento ($150.000/mes).' },
+    ] as Step[],
+    webCta: 'Ver paquetes web',
+    iaEyebrow: 'CONTENIDO IA',
+    iaTitleA: 'Contenido de marca,',
+    iaTitleB: 'sin sesión de fotos.',
+    iaLead: 'Creamos fotos y videos de tu producto o marca con IA, con la dirección de arte de un estudio.',
+    iaSteps: [
+      { title: 'Brief', tag: 'Inicio', text: 'Nos cuentas de tu marca, tu producto y qué necesitas comunicar: un lanzamiento, una campaña, tus redes o tu catálogo.' },
+      { title: 'Referencias y material', tag: 'Inicio', text: 'Nos compartes fotos de tu producto, tu logo y marcas o estilos que te gusten.' },
+      { title: 'Concepto', tag: 'Dirección', text: 'Definimos estilo, escenarios y dirección visual alineados a tu identidad. Lo apruebas antes de producir.' },
+      { title: 'Producción', tag: 'Producción', text: 'Generamos cada pieza con las mejores herramientas de IA y la refinamos hasta que se vea profesional, no artificial.' },
+      { title: 'Revisión', tag: 'Revisión', text: 'Revisas las piezas y nos pides ajustes dentro de las rondas acordadas en tu paquete.' },
+      { title: 'Entrega', tag: 'Entrega', text: 'Recibes tus archivos en alta resolución, listos para publicar en redes, en tu web o en anuncios.' },
+    ] as Step[],
+    iaCta: 'Ver contenido IA',
+    needEyebrow: 'QUÉ NECESITAMOS DE TI',
+    needTitleA: 'Para arrancar,',
+    needTitleB: 'solo esto.',
+    needs: [
+      { label: 'Sitio web', items: ['Tu logo', 'Fotos de tus trabajos', 'Servicios, ubicación y horarios', 'Tus redes y reseñas de Google'] },
+      { label: 'Contenido IA', items: ['Fotos claras de tu producto', 'Tu logo y colores de marca', 'Referencias de estilos que te gusten', 'Dónde se va a publicar el contenido'] },
+    ],
+    ctaEyebrow: 'EMPECEMOS',
+    ctaTitleA: '¿Arrancamos',
+    ctaTitleB: 'tu proyecto?',
+    ctaText: 'Cuéntanos qué necesitas y te enviamos una propuesta clara, con alcance y tiempos definidos.',
+    ctaBtn: 'Empezar ahora',
+  },
+  en: {
+    title: 'Process — LOGYC STUDIO',
+    description: 'How we work: the step-by-step process to build your website and your AI content, from the first conversation to delivery.',
+    eyebrow: 'PROCESS',
+    h1a: 'How we work,',
+    h1b: 'step by step.',
+    sub: 'From the first conversation to final delivery, you know what stage your project is in, what we need from you, and when you get it.',
+    tracks: [
+      { id: 'proceso-web', num: '01', label: 'Websites', title: 'Your website', text: 'From idea to a live website in 3 to 10 business days.' },
+      { id: 'proceso-ia', num: '02', label: 'AI content', title: 'Your AI content', text: 'Photos and videos of your brand, with human direction and judgment.' },
+    ],
+    see: 'See process',
+    rulesEyebrow: 'HOW WE WORK',
+    rulesTitleA: 'Clear rules',
+    rulesTitleB: 'from day one.',
+    rules: [
+      ['Defined scope', 'Before we start, you know what your project includes, what it costs, and when you get it.'],
+      ['Human judgment', 'AI speeds up production. Every design decision and every piece goes through our team.'],
+      ['Agreed rounds', 'Revisions are defined from the start, so the project moves forward without detours.'],
+      ['Direct communication', 'You talk to the people making your project and always know where it stands.'],
+    ],
+    webEyebrow: 'WEBSITES',
+    webTitleA: 'From idea to website,',
+    webTitleB: 'in days.',
+    webLead: 'Landing plan in 3 to 5 business days. Professional plan in 7 to 10 business days.',
+    webSteps: [
+      { title: 'Conversation', tag: 'Kickoff', text: 'You tell us about your business, who you sell to, and what you want to achieve. We recommend the package that fits best.' },
+      { title: 'Confirmation and first payment', tag: 'Kickoff', text: 'You confirm the package and pay 50% by bank transfer. That locks in your delivery date.' },
+      { title: 'Materials and domain', tag: 'Kickoff', text: 'You share your logo, photos of your work, and your business details. We choose your web address together; the first year of the domain is included.' },
+      { title: 'Structure and copy', tag: 'Production', text: 'We organize the sections and copy so every visit ends in a quote request. On the Professional plan we write all the content.' },
+      { title: 'Design and development', tag: 'Production', text: 'We design and build your site: mobile-ready, with local SEO, a WhatsApp button, and AI-made photos of your business.' },
+      { title: 'Live review', tag: 'Review', text: 'We show you the site running online and you request your changes: 1 round on Landing, 2 on Professional.' },
+      { title: 'Launch and delivery', tag: 'Delivery', text: 'You pay the remaining 50% and your site goes live on your domain. If you want, we keep it up to date with the maintenance plan ($150,000 COP/month).' },
+    ] as Step[],
+    webCta: 'View web packages',
+    iaEyebrow: 'AI CONTENT',
+    iaTitleA: 'Brand content,',
+    iaTitleB: 'no photo shoot.',
+    iaLead: 'We create photos and videos of your product or brand with AI, with the art direction of a studio.',
+    iaSteps: [
+      { title: 'Brief', tag: 'Kickoff', text: 'You tell us about your brand, your product, and what you need to communicate: a launch, a campaign, your social media, or your catalog.' },
+      { title: 'References and materials', tag: 'Kickoff', text: 'You share photos of your product, your logo, and brands or styles you like.' },
+      { title: 'Concept', tag: 'Direction', text: 'We define the style, settings, and visual direction aligned with your identity. You approve it before we produce.' },
+      { title: 'Production', tag: 'Production', text: 'We create every piece with the best AI tools and refine it until it looks professional, not artificial.' },
+      { title: 'Review', tag: 'Review', text: 'You review the pieces and request changes within the rounds agreed in your package.' },
+      { title: 'Delivery', tag: 'Delivery', text: 'You get your files in high resolution, ready to publish on social media, your website, or ads.' },
+    ] as Step[],
+    iaCta: 'See AI content',
+    needEyebrow: 'WHAT WE NEED FROM YOU',
+    needTitleA: 'To get started,',
+    needTitleB: 'just this.',
+    needs: [
+      { label: 'Website', items: ['Your logo', 'Photos of your work', 'Services, location, and hours', 'Your social media and Google reviews'] },
+      { label: 'AI content', items: ['Clear photos of your product', 'Your logo and brand colors', 'References of styles you like', 'Where the content will be published'] },
+    ],
+    ctaEyebrow: "LET'S START",
+    ctaTitleA: 'Shall we start',
+    ctaTitleB: 'your project?',
+    ctaText: "Tell us what you need and we'll send you a clear proposal, with defined scope and timelines.",
+    ctaBtn: 'Start now',
+  },
+}[lang];
+
+const pad = (i: number) => String(i + 1).padStart(2, '0');
+const aiContent = routes.content[lang];
+---
+<Base lang={lang} page="process" title={copy.title} description={copy.description}>
+<!-- HERO -->
+<section class="hero page-hero process-hero has-gradient" id="top">
+  <HeroGradient />
+  <div class="wrap hero-inner">
+    <div class="hero-eyebrow"><span class="eyebrow"><span class="bk">[</span> {copy.eyebrow} <span class="bk">]</span></span></div>
+    <h1>
+      <span class="reveal-line"><span style="animation-delay:.35s">{copy.h1a}</span></span>
+      <span class="reveal-line"><span class="lime" style="animation-delay:.5s">{copy.h1b}</span></span>
+    </h1>
+    <p class="sub">{copy.sub}</p>
+    <div class="track-grid">
+      {copy.tracks.map((t) => (
+        <a href={`#${t.id}`} class="track-card">
+          <span class="mlabel">{t.num} / {t.label}</span>
+          <span class="track-title">{t.title}</span>
+          <span class="track-text">{t.text}</span>
+          <span class="track-go">{copy.see} <span class="arw">↓</span></span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- REGLAS -->
+<section class="block">
+  <div class="wrap">
+    <div class="sec-head fx"><span class="eyebrow"><span class="bk">[</span> {copy.rulesEyebrow} <span class="bk">]</span></span></div>
+    <h2 class="sec-title fx">{copy.rulesTitleA} <span class="lime">{copy.rulesTitleB}</span></h2>
+    <div class="why-grid fx">
+      {copy.rules.map(([h, p], i) => (
+        <div class="why-cell"><div class="sym">{pad(i)}</div><h4>{h}</h4><p>{p}</p></div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- 01 SITIOS WEB -->
+<section class="block proc" id="proceso-web">
+  <div class="wrap">
+    <div class="proc-stage">
+    <div class="proc-pin">
+      <div class="sec-head fx"><span class="sec-num">[ 01 ]</span><span class="eyebrow"><span class="bk">/</span> {copy.webEyebrow}</span></div>
+      <h2 class="sec-title fx">{copy.webTitleA}<br><span class="lime">{copy.webTitleB}</span></h2>
+      <p class="lead fx">{copy.webLead}</p>
+    </div>
+    <StackedSteps client:visible steps={copy.webSteps} top="var(--stack-top, 96px)" />
+    </div>
+    <div class="proc-more fx"><a href={routes.web[lang]} class="btn btn-ghost">{copy.webCta} <span class="arw">→</span></a></div>
+  </div>
+</section>
+
+<!-- 02 CONTENIDO IA -->
+<section class="block proc" id="proceso-ia">
+  <div class="wrap">
+    <div class="proc-stage">
+    <div class="proc-pin">
+      <div class="sec-head fx"><span class="sec-num">[ 02 ]</span><span class="eyebrow"><span class="bk">/</span> {copy.iaEyebrow}</span></div>
+      <h2 class="sec-title fx">{copy.iaTitleA}<br><span class="lime">{copy.iaTitleB}</span></h2>
+      <p class="lead fx">{copy.iaLead}</p>
+    </div>
+    <StackedSteps client:visible steps={copy.iaSteps} top="var(--stack-top, 96px)" />
+    </div>
+    <div class="proc-more fx"><a href={aiContent} class="btn btn-ghost">{copy.iaCta} <span class="arw">→</span></a></div>
+  </div>
+</section>
+
+<!-- QUÉ NECESITAMOS -->
+<section class="block">
+  <div class="wrap">
+    <div class="sec-head fx"><span class="eyebrow"><span class="bk">[</span> {copy.needEyebrow} <span class="bk">]</span></span></div>
+    <h2 class="sec-title fx">{copy.needTitleA} <span class="lime">{copy.needTitleB}</span></h2>
+    <div class="need-grid">
+      {copy.needs.map((n) => (
+        <div class="need-card fx">
+          <div class="mlabel">{n.label}</div>
+          <ul>{n.items.map((it) => <li>{it}</li>)}</ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="contacto">
+  <div class="cta-glow"></div>
+  <div class="wrap">
+    <span class="eyebrow fx" style="margin-bottom:26px;display:inline-flex"><span class="bk">[</span> {copy.ctaEyebrow} <span class="bk">]</span></span>
+    <h2 class="fx">{copy.ctaTitleA}<br><span class="lime">{copy.ctaTitleB}</span></h2>
+    <p class="fx">{copy.ctaText}</p>
+    <div class="cta-row fx">
+      <a href={routes.contact[lang]} class="btn btn-primary">{copy.ctaBtn} <span class="arw">→</span></a>
+      <a href={routes.web[lang]} class="btn btn-ghost">{copy.webCta}</a>
+    </div>
+    <Instagram lang={lang} variant="cta" />
+  </div>
+</section>
+</Base>

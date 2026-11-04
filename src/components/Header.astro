@@ -13,10 +13,9 @@ const onHome = page === 'home';
 // Home sections are anchors on the home page; from other pages they link back to it.
 const section = (id: string) => (onHome ? `#${id}` : `${home}#${id}`);
 const links = [
-  { href: section('servicios'), label: t.nav.servicios },
   { href: routes.web[lang], label: t.nav.web, current: page === 'web' },
-  { href: section('contenido'), label: t.nav.contenido },
-  { href: section('proceso'), label: t.nav.proceso },
+  { href: routes.content[lang], label: t.nav.contenido, current: page === 'content' },
+  { href: routes.process[lang], label: t.nav.proceso, current: page === 'process' },
   { href: section('faq'), label: t.nav.faq },
   { href: routes.contact[lang], label: t.nav.contacto, current: page === 'contact' },
 ];

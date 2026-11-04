@@ -40,9 +40,9 @@ var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   });
 
   // hero cursor glow
-  if(!reduce){
-    var glow = document.getElementById('heroGlow');
-    var hero = document.querySelector('.hero');
+  var glow = document.getElementById('heroGlow');
+  var hero = document.querySelector('.hero');
+  if(!reduce && glow && hero){
     var tx=0,ty=0,cx=0,cy=0,raf;
     hero.addEventListener('mousemove', function(ev){
       var r = hero.getBoundingClientRect();
@@ -140,4 +140,22 @@ var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if(!isOpen){ item.classList.add('open'); a.style.maxHeight = a.scrollHeight + 'px'; }
     });
   });
+  // Pinned section headings (.proc-pin): each heading stays under the site header while its
+  // stacked step cards scroll, and the cards pin just under the heading's current height.
+  // Heading and cards share .proc-stage, so both are released together.
+  var pins = document.querySelectorAll('.proc-pin');
+  if(pins.length){
+    var hdrEl = document.getElementById('hdr');
+    var layoutPins = function(){
+      var navH = hdrEl ? hdrEl.getBoundingClientRect().height : 66;
+      pins.forEach(function(pin){
+        pin.style.top = navH + 'px';
+        pin.parentElement.style.setProperty('--stack-top', (navH + pin.offsetHeight + 20) + 'px');
+      });
+    };
+    layoutPins();
+    var pinRo = new ResizeObserver(layoutPins);
+    pins.forEach(function(pin){ pinRo.observe(pin); });
+    if(hdrEl) pinRo.observe(hdrEl);
+  }
 })();

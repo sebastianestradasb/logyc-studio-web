@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Instagram from './Instagram.astro';
+import HeroGradient from './HeroGradient.astro';
 import { contact, social, routes, type Lang } from '../i18n';
 
 interface Props {
@@ -72,8 +73,8 @@ const copy = {
 const mailto = `mailto:${contact.email}?subject=${encodeURIComponent(copy.subject)}`;
 ---
 <Base lang={lang} page="contact" title={copy.title} description={copy.description}>
-<section class="hero page-hero contact-hero" id="top">
-  <div class="hero-glow" id="heroGlow"></div>
+<section class="hero page-hero contact-hero has-gradient" id="top">
+  <HeroGradient />
   <div class="wrap hero-inner">
     <div class="hero-eyebrow"><span class="eyebrow"><span class="bk">[</span> {copy.eyebrow} <span class="bk">]</span></span></div>
     <h1>
