@@ -77,10 +77,16 @@
     .nav-right{gap:18px}
     .nav-links{gap:18px}
   }
-  .nav-links a{font-family:var(--font-mono);font-weight:500;font-size:12.5px;letter-spacing:.04em;color:var(--gray-3);
-    text-decoration:none;transition:color .25s}
-  .nav-links a:hover,.nav-links a[aria-current="page"]{color:var(--paper)}
-  .mobile-menu a[aria-current="page"]:not(.btn){color:var(--lime)}
+  /* Menu in brand green: hovering lights the link up; the current page stays lit and underlined */
+  .nav-links a{position:relative;font-family:var(--font-mono);font-weight:500;font-size:12.5px;letter-spacing:.04em;color:var(--lime);
+    text-decoration:none;transition:color .25s,text-shadow .25s}
+  .nav-links a::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:1px;background:var(--lime);
+    box-shadow:0 0 8px rgba(175,252,48,.9);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease)}
+  .nav-links a:hover,.nav-links a:focus-visible,.nav-links a[aria-current="page"]{color:#D4FF7A;
+    text-shadow:0 0 8px rgba(175,252,48,.9),0 0 22px rgba(175,252,48,.55)}
+  .nav-links a:hover::after,.nav-links a:focus-visible::after,.nav-links a[aria-current="page"]::after{transform:scaleX(1)}
+  .mobile-menu a:not(.btn):active,.mobile-menu a[aria-current="page"]:not(.btn){color:#D4FF7A;
+    text-shadow:0 0 8px rgba(175,252,48,.9),0 0 22px rgba(175,252,48,.55)}
 
   .lang-switch{display:flex;align-items:center;gap:7px;font-family:var(--font-mono);font-weight:600;font-size:12px;letter-spacing:.05em}
   .lang-switch a{color:var(--gray-3);text-decoration:none;transition:color .25s}
@@ -514,8 +520,9 @@
       transform:translateY(-120%);transition:transform .4s var(--ease);padding:24px 28px 34px}
     .mobile-menu.open{transform:translateY(0)}
     .mobile-menu a{display:block;font-family:var(--font-mono);font-weight:500;font-size:15px;color:var(--paper);
-      text-decoration:none;padding:14px 0;border-bottom:1px solid var(--gray-2)}
-    .mobile-menu .btn-primary{display:inline-flex;margin-top:22px}
+      text-decoration:none;padding:14px 0;border-bottom:1px solid var(--gray-2);transition:color .25s,text-shadow .25s}
+    .mobile-menu a:not(.btn){color:var(--lime)}
+    .mobile-menu .btn-primary{display:inline-flex;margin-top:22px;padding:14px 20px;border-bottom:none;color:var(--ink)}
     .foot{flex-direction:column;justify-content:center;text-align:center;gap:16px}
     .intro-grid{grid-template-columns:1fr;gap:40px}
     .svc-top{grid-template-columns:1fr;gap:32px}
