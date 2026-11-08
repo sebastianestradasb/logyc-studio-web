@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import HeroGradient from './HeroGradient.astro';
 import Instagram from './Instagram.astro';
+import ShinyButton from './ui/shiny-button';
 import StackedSteps from './react/StackedSteps';
 import { routes, type Lang } from '../i18n';
 
@@ -231,7 +232,7 @@ const aiContent = routes.content[lang];
     <h2 class="fx">{copy.ctaTitleA}<br><span class="lime">{copy.ctaTitleB}</span></h2>
     <p class="fx">{copy.ctaText}</p>
     <div class="cta-row fx">
-      <a href={routes.contact[lang]} class="btn btn-primary">{copy.ctaBtn} <span class="arw">→</span></a>
+      <ShinyButton href={routes.contact[lang]} label={`${copy.ctaBtn} →`} />
       <a href={routes.web[lang]} class="btn btn-ghost">{copy.webCta}</a>
     </div>
     <Instagram lang={lang} variant="cta" />

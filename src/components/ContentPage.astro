@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import HeroGradient from './HeroGradient.astro';
 import Instagram from './Instagram.astro';
+import ShinyButton from './ui/shiny-button';
 import Reel from './Reel.astro';
 import AiPortfolio from './AiPortfolio.astro';
 import { routes, type Lang } from '../i18n';
@@ -271,7 +272,7 @@ const contactPage = routes.contact[lang];
     <h2 class="fx">{copy.ctaTitleA}<br><span class="lime">{copy.ctaTitleB}</span></h2>
     <p class="fx">{copy.ctaText}</p>
     <div class="cta-row fx">
-      <a href={contactPage} class="btn btn-primary">{copy.ctaBtn} <span class="arw">→</span></a>
+      <ShinyButton href={contactPage} label={`${copy.ctaBtn} →`} />
     </div>
     <Instagram lang={lang} variant="cta" />
   </div>

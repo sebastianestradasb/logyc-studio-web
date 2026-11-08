@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import HeroGradient from '../components/HeroGradient.astro';
 import Instagram from '../components/Instagram.astro';
+import ShinyButton from '../components/ui/shiny-button';
 ---
 <Base lang="en" page="web" title="Web Design — LOGYC STUDIO" description="Professional websites for your business: Landing package $1,500,000 and Professional $2,500,000 COP. Domain, responsive design, local SEO, and WhatsApp included.">
 <!-- HERO -->
@@ -226,7 +227,7 @@ import Instagram from '../components/Instagram.astro';
     <h2 class="fx">Ready for a website<br>of your <span class="lime">own?</span></h2>
     <p class="fx">Tell us about your business and we'll help you choose the right package.</p>
     <div class="cta-row fx">
-      <a href="contacto-en.html" class="btn btn-primary">Start now <span class="arw">→</span></a>
+      <ShinyButton href="contacto-en.html" label="Start now →" />
       <a href="#" class="btn btn-ghost">Message us on WhatsApp</a>
     </div>
     <Instagram lang="en" variant="cta" />
