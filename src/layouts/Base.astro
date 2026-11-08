@@ -43,7 +43,7 @@ const alternates = { es: cleanUrl(routes[page].es), en: cleanUrl(routes[page].en
 </head>
 <body>
 
-<div class="field"></div>
+<canvas class="field" id="dotField" aria-hidden="true"></canvas>
 <div class="vignette"></div>
 
 <Header lang={lang} page={page} />
@@ -54,6 +54,9 @@ const alternates = { es: cleanUrl(routes[page].es), en: cleanUrl(routes[page].en
 
 <script>
   import '../scripts/main.js';
+  import '../scripts/dot-field.js';
+  import '../scripts/cursor.js';
+  import '../scripts/sound.js';
 </script>
 </body>
 </html>

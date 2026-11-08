@@ -1,5 +1,6 @@
 ---
 import Logo from './Logo.astro';
+import ShinyButton from './ui/shiny-button';
 import { routes, ui, type Lang, type Page } from '../i18n';
 
 interface Props {
@@ -31,7 +32,13 @@ const current = (on: boolean) => (on ? 'page' : undefined);
       <nav class="nav-links">
         {links.map((l) => <a href={l.href} aria-current={current(!!l.current)}>{l.label}</a>)}
       </nav>
-      <a href={contactPage} class="btn btn-primary">{t.cta} <span class="arw">→</span></a>
+      <ShinyButton href={contactPage} label={`${t.cta} →`} className="nav-cta" />
+      <button class="sound-toggle is-on" type="button" data-sound-toggle aria-pressed="true"
+        data-label-on={lang === 'es' ? 'Sonido activado' : 'Sound on'}
+        data-label-off={lang === 'es' ? 'Sonido apagado' : 'Sound off'}
+        aria-label={lang === 'es' ? 'Sonido activado' : 'Sound on'}>
+        <span></span><span></span><span></span><span></span>
+      </button>
       <div class="lang-switch">
         <a href={routes[page].es} class={lang === 'es' ? 'active' : undefined} aria-current={current(lang === 'es')}>ES</a>
         <span class="sep">/</span>
@@ -43,5 +50,5 @@ const current = (on: boolean) => (on ? 'page' : undefined);
 </header>
 <div class="mobile-menu" id="mobileMenu">
   {links.map((l) => <a href={l.href} aria-current={current(!!l.current)}>{l.label}</a>)}
-  <a href={contactPage} class="btn btn-primary">{t.cta} <span class="arw">→</span></a>
+  <ShinyButton href={contactPage} label={`${t.cta} →`} className="mobile-cta" />
 </div>

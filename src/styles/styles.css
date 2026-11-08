@@ -28,14 +28,8 @@
   ::selection{background:var(--lime);color:var(--ink)}
 
   /* ---------- Ambient pixel-grid field (brand signature) ---------- */
-  .field{
-    position:fixed;inset:0;z-index:0;pointer-events:none;
-    background-image:radial-gradient(circle, rgba(250,250,250,.045) 1px, transparent 1.4px);
-    background-size:34px 34px;
-    mask-image:radial-gradient(ellipse 90% 80% at 50% 30%, #000 30%, transparent 90%);
-    animation:drift 40s linear infinite;
-  }
-  @keyframes drift{to{background-position:340px 340px}}
+  /* Dot grid background, drawn by scripts/dot-field.js */
+  .field{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
   .vignette{position:fixed;inset:0;z-index:0;pointer-events:none;
     background:radial-gradient(ellipse 120% 70% at 50% -10%, rgba(175,252,48,.06), transparent 60%);}
 
@@ -93,6 +87,19 @@
   .lang-switch a:hover{color:var(--paper)}
   .lang-switch a.active{color:var(--lime)}
   .lang-switch .sep{color:var(--gray-2)}
+  /* Sound toggle: four equaliser bars that dance while sound is on and settle into a flat line when off */
+  .sound-toggle{display:flex;align-items:center;justify-content:center;gap:2px;width:32px;height:32px;padding:0;
+    background:none;border:1px solid var(--gray-2);border-radius:8px;cursor:pointer;transition:border-color .3s,box-shadow .3s}
+  .sound-toggle:hover{border-color:var(--lime);box-shadow:0 0 12px rgba(175,252,48,.25)}
+  .sound-toggle span{width:2px;height:3px;border-radius:1px;background:var(--gray-3);
+    transition:height .35s cubic-bezier(.25,1,.5,1),background-color .3s}
+  .sound-toggle.is-on span{background:var(--lime);box-shadow:0 0 4px rgba(175,252,48,.6);animation:eq 1.1s ease-in-out infinite}
+  .sound-toggle.is-on span:nth-child(2){animation-delay:-.35s}
+  .sound-toggle.is-on span:nth-child(3){animation-delay:-.7s}
+  .sound-toggle.is-on span:nth-child(4){animation-delay:-.2s}
+  @keyframes eq{0%,100%{height:4px}50%{height:13px}}
+  @media (prefers-reduced-motion: reduce){.sound-toggle.is-on span{animation:none;height:10px}}
+  @media (hover: none), (pointer: coarse){.sound-toggle{display:none}}
 
   .btn{font-family:var(--font-mono);font-size:12.5px;font-weight:500;letter-spacing:.03em;
     text-decoration:none;display:inline-flex;align-items:center;gap:8px;cursor:pointer;border:none}
@@ -393,7 +400,7 @@
   .track-title{font-family:var(--font-display);font-weight:700;font-size:clamp(22px,2.4vw,28px);letter-spacing:-.02em;color:var(--paper)}
   .track-text{font-size:14.5px;color:var(--gray-3);line-height:1.55}
   .track-go{margin-top:6px;font-size:13.5px;font-weight:600;color:var(--lime)}
-  .proc-more{margin-top:40px}
+  .proc-more{margin-top:32px}
   /* Section heading pinned under the header while its stacked step cards scroll */
   .proc-pin{position:sticky;z-index:2;padding:18px 0 6px;background:linear-gradient(to bottom,var(--ink) 82%,rgba(10,10,10,0))}
   .proc-pin .lead{margin-top:14px}
@@ -511,6 +518,8 @@
   /* responsive */
   @media(max-width:900px){
     .nav-links,.nav .btn-primary{display:none}
+    .nav .nav-cta{display:none !important} /* beats the button's own inline styles */
+    .sound-toggle{display:none}
     .nav{justify-content:center}
     .burger{display:flex;position:absolute;left:5%;top:50%;transform:translateY(-50%)}
     .lang-switch{position:absolute;right:5%;top:50%;transform:translateY(-50%)}
@@ -522,7 +531,9 @@
     .mobile-menu a{display:block;font-family:var(--font-mono);font-weight:500;font-size:15px;color:var(--paper);
       text-decoration:none;padding:14px 0;border-bottom:1px solid var(--gray-2);transition:color .25s,text-shadow .25s}
     .mobile-menu a:not(.btn){color:var(--lime)}
-    .mobile-menu .btn-primary{display:inline-flex;margin-top:22px;padding:14px 20px;border-bottom:none;color:var(--ink)}
+    /* the shiny CTA keeps its own border and colours instead of the menu link styles */
+    .mobile-menu .mobile-cta{display:inline-flex;margin-top:22px;padding:14px 20px;border:1px solid transparent;
+      font-size:14px;font-weight:600;color:var(--paper)}
     .foot{flex-direction:column;justify-content:center;text-align:center;gap:16px}
     .intro-grid{grid-template-columns:1fr;gap:40px}
     .svc-top{grid-template-columns:1fr;gap:32px}
@@ -563,3 +574,18 @@
     *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
     .reveal-line>span{transform:none;opacity:1}
   }
+
+  /* ---------- Custom cursor (mouse only, see scripts/cursor.js) ---------- */
+  .has-cursor, .has-cursor *{cursor:none !important}
+  .has-cursor.cur-text input, .has-cursor.cur-text textarea, .has-cursor.cur-text select{cursor:text !important}
+  .cur-dot, .cur-ring{position:fixed;left:0;top:0;z-index:9999;pointer-events:none;border-radius:50%;will-change:translate}
+  .cur-dot{width:6px;height:6px;margin:-3px 0 0 -3px;background:var(--lime);box-shadow:0 0 8px rgba(175,252,48,.6);
+    transition:opacity .2s,scale .25s cubic-bezier(.25,1,.5,1),box-shadow .25s}
+  .cur-ring{width:30px;height:30px;margin:-15px 0 0 -15px;border:1px solid rgba(175,252,48,.55);
+    transition:scale .35s cubic-bezier(.25,1,.5,1),opacity .3s}
+  /* over links and buttons the ring closes onto the dot and fades, and the dot glows brighter */
+  .cur-link .cur-ring{scale:.2;opacity:0}
+  .cur-link .cur-dot{scale:1.35;box-shadow:0 0 10px 2px rgba(175,252,48,.75),0 0 22px rgba(175,252,48,.35)}
+  .cur-down .cur-ring{scale:.8}
+  .cur-down .cur-dot{scale:.8}
+  .cur-text .cur-dot, .cur-text .cur-ring, .cur-out .cur-dot, .cur-out .cur-ring{opacity:0}
