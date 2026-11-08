@@ -88,7 +88,7 @@ export function ShinyButton({
       padding: 12px 20px;
       font-family: var(--font-mono);
       font-size: 12.5px;
-      line-height: 1.2;
+      line-height: inherit; /* same height as the site's .btn */
       font-weight: 600;
       letter-spacing: .03em;
       white-space: nowrap;
