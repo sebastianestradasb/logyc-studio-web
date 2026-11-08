@@ -9,12 +9,25 @@ interface Props {
 }
 const { lang, page } = Astro.props;
 const t = ui[lang];
+const home = routes.home[lang];
+// The FAQ lives on the home page, so from other pages it links back to it.
+const faq = page === 'home' ? '#faq' : `${home}#faq`;
+const links = [
+  { href: routes.web[lang], label: t.nav.web, current: page === 'web' },
+  { href: routes.content[lang], label: t.nav.contenido, current: page === 'content' },
+  { href: routes.process[lang], label: t.nav.proceso, current: page === 'process' },
+  { href: faq, label: t.nav.faq },
+  { href: routes.contact[lang], label: t.nav.contacto, current: page === 'contact' },
+];
 ---
 <footer>
   <div class="wrap foot">
-    <a href={page === 'home' ? '#top' : routes.home[lang]} class="logo" aria-label={t.homeLabel}>
+    <a href={page === 'home' ? '#top' : home} class="logo" aria-label={t.homeLabel}>
       <Logo idSuffix="F" />
     </a>
+    <nav class="foot-links" aria-label={lang === 'es' ? 'Pie de página' : 'Footer'}>
+      {links.map((l) => <a href={l.href} aria-current={l.current ? 'page' : undefined}>{l.label}</a>)}
+    </nav>
     <Instagram lang={lang} variant="footer" />
     <div class="fmono">© 2026 LOGYC STUDIO <span class="lime">/</span> {t.footer}</div>
   </div>

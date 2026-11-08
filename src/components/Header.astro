@@ -11,13 +11,10 @@ const { lang, page } = Astro.props;
 const t = ui[lang];
 const home = routes.home[lang];
 const onHome = page === 'home';
-// Home sections are anchors on the home page; from other pages they link back to it.
-const section = (id: string) => (onHome ? `#${id}` : `${home}#${id}`);
 const links = [
   { href: routes.web[lang], label: t.nav.web, current: page === 'web' },
   { href: routes.content[lang], label: t.nav.contenido, current: page === 'content' },
   { href: routes.process[lang], label: t.nav.proceso, current: page === 'process' },
-  { href: section('faq'), label: t.nav.faq },
   { href: routes.contact[lang], label: t.nav.contacto, current: page === 'contact' },
 ];
 const contactPage = routes.contact[lang];
