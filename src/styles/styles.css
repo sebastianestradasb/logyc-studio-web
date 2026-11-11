@@ -342,7 +342,7 @@
   .pk-amount small,.maint-card .big small{font-family:var(--font-mono);font-weight:500;font-size:12px;color:var(--gray-3);letter-spacing:.06em;margin-left:6px}
   .pk-time{font-family:var(--font-mono);font-weight:500;font-size:12px;color:var(--gray-3);margin-top:10px;letter-spacing:.02em}
 
-  .cmp-wrap{margin-top:56px;border:1px solid var(--gray-2);border-radius:16px;overflow-x:auto}
+  .cmp-wrap{margin-top:56px;border:1px solid var(--gray-2);border-radius:16px;overflow-x:auto;background:#111}
   .cmp{width:100%;border-collapse:collapse;min-width:560px}
   .cmp th,.cmp td{padding:17px 24px;text-align:left;border-bottom:1px solid var(--gray-2);font-size:15px;color:#d0d0d0}
   .cmp thead th{font-family:var(--font-mono);font-weight:700;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gray-3);background:rgba(255,255,255,.02)}
@@ -352,6 +352,30 @@
   .cmp .yes{color:var(--lime);font-weight:700}
   .cmp .no{color:#4a4a4a}
   .cmp tr:last-child td{border-bottom:none;font-family:var(--font-display);font-weight:700;font-size:18px;color:var(--paper)}
+  /* Phones: no sideways scrolling. Each row stacks its feature name over the two plans side by side,
+     and the plan names stay pinned under the site header while the list scrolls, so both plans can be
+     compared at a glance. The table also gets a solid background so the starfield doesn't show through. */
+  @media(max-width:720px){
+    .cmp-wrap{overflow:visible;margin-top:40px}
+    .cmp,.cmp thead,.cmp tbody{display:block;min-width:0}
+    .cmp thead{position:sticky;top:74px;z-index:3;background:#161616;border-bottom:1px solid var(--gray-2);
+      border-radius:16px 16px 0 0;box-shadow:0 10px 20px rgba(10,10,10,.55)}
+    .cmp tr{display:grid;grid-template-columns:1fr 1fr}
+    .cmp thead th{border:none;padding:16px 12px;font-size:11.5px;background:none !important;width:auto !important;text-align:center !important}
+    .cmp thead th:first-child{display:none}
+    .cmp tbody tr{border-bottom:1px solid var(--gray-2)}
+    .cmp tbody tr:last-child{border-bottom:none}
+    .cmp th,.cmp td{border-bottom:none}
+    .cmp td{padding:6px 12px 14px;font-size:14.5px;color:var(--paper);width:auto !important;display:flex;align-items:center;justify-content:center;text-align:center}
+    .cmp td:first-child{grid-column:1 / -1;justify-content:flex-start;text-align:left;padding:14px 16px 4px;
+      font-size:12.5px;color:var(--gray-3);letter-spacing:.01em}
+    .cmp td.hl{background:none}
+    .cmp td.hl:not(.no){color:var(--lime)}
+    .cmp .yes{font-size:17px}
+    .cmp tr:last-child td{font-size:16px;padding-bottom:18px}
+    .cmp tr:last-child td:first-child{font-size:12.5px;font-family:var(--font-mono);font-weight:500;color:var(--gray-3)}
+    .cmp tr:last-child td.hl{color:var(--lime)}
+  }
 
   .maint{display:grid;grid-template-columns:.8fr 1.2fr;gap:20px;margin-top:56px}
   .maint-card{border:1px solid var(--lime);border-radius:16px;padding:34px 30px;
@@ -594,7 +618,6 @@
     .pg-item{grid-template-columns:1fr;gap:4px}
     .brief-grid{grid-template-columns:1fr}
     .contact-email{padding:30px 24px}
-    .cmp th,.cmp td{padding:14px 16px;font-size:14px}
   }
   @media(prefers-reduced-motion:reduce){
     *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
