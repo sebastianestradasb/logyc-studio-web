@@ -1,6 +1,7 @@
 ---
 import Logo from './Logo.astro';
 import ShinyButton from './ui/shiny-button';
+import Velaris from './ui/velaris';
 import { routes, ui, type Lang, type Page } from '../i18n';
 
 interface Props {
@@ -17,6 +18,8 @@ const links = [
   { href: routes.process[lang], label: t.nav.proceso, current: page === 'process' },
   { href: routes.contact[lang], label: t.nav.contacto, current: page === 'contact' },
 ];
+// The mobile menu also lists the home page, so every page has an entry to light up.
+const mobileLinks = [{ href: onHome ? '#top' : home, label: t.nav.home, current: onHome }, ...links];
 const contactPage = routes.contact[lang];
 const current = (on: boolean) => (on ? 'page' : undefined);
 ---
@@ -41,11 +44,31 @@ const current = (on: boolean) => (on ? 'page' : undefined);
         <span class="sep">/</span>
         <a href={routes[page].en} class={lang === 'en' ? 'active' : undefined} aria-current={current(lang === 'en')}>EN</a>
       </div>
-      <button class="burger" id="burger" aria-label={t.menu}><span></span><span></span><span></span></button>
+      <button class="burger" id="burger" aria-label={t.menu} aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
     </div>
   </div>
 </header>
-<div class="mobile-menu" id="mobileMenu">
-  {links.map((l) => <a href={l.href} aria-current={current(!!l.current)}>{l.label}</a>)}
-  <ShinyButton href={contactPage} label={`${t.cta} →`} className="mobile-cta" />
+<!-- Full-screen mobile menu over the animated LOGYC-green gradient; the header stays on top of it,
+     so the logo sits centred and the burger turns into the close button. -->
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <Velaris
+    client:media="(max-width: 900px)"
+    className="mm-bg"
+    height="100%"
+    bg="#0A0A0A"
+    colors={["#1F3A06", "#AFFC30", "#4E7A0E", "#0A0A0A"]}
+    speed={1.6}
+    grain={0.35}
+  />
+  <nav class="mm-links" aria-label={t.menu}>
+    {mobileLinks.map((l, i) => (
+      <a href={l.href} aria-current={current(!!l.current)} style={`--i:${i}`}>
+        <span class="mm-num">{String(i + 1).padStart(2, '0')}</span>
+        <span class="mm-label">{l.label}</span>
+      </a>
+    ))}
+  </nav>
+  <div class="mm-foot" style={`--i:${mobileLinks.length}`}>
+    <ShinyButton href={contactPage} label={`${t.cta} →`} className="mobile-cta" />
+  </div>
 </div>

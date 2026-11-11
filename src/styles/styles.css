@@ -79,8 +79,6 @@
   .nav-links a:hover,.nav-links a:focus-visible,.nav-links a[aria-current="page"]{color:#D4FF7A;
     text-shadow:0 0 8px rgba(175,252,48,.9),0 0 22px rgba(175,252,48,.55)}
   .nav-links a:hover::after,.nav-links a:focus-visible::after,.nav-links a[aria-current="page"]::after{transform:scaleX(1)}
-  .mobile-menu a:not(.btn):active,.mobile-menu a[aria-current="page"]:not(.btn){color:#D4FF7A;
-    text-shadow:0 0 8px rgba(175,252,48,.9),0 0 22px rgba(175,252,48,.55)}
 
   .lang-switch{display:flex;align-items:center;gap:7px;font-family:var(--font-mono);font-weight:600;font-size:12px;letter-spacing:.05em}
   .lang-switch a{color:var(--gray-3);text-decoration:none;transition:color .25s}
@@ -529,16 +527,39 @@
     .burger{display:flex;position:absolute;left:5%;top:50%;transform:translateY(-50%)}
     .lang-switch{position:absolute;right:5%;top:50%;transform:translateY(-50%)}
     .lang-switch a{padding:14px 6px;margin:-14px -6px}
-    .mobile-menu{display:block;position:fixed;inset:74px 0 auto 0;z-index:49;
-      background:rgba(10,10,10,.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--gray-2);
-      transform:translateY(-120%);transition:transform .4s var(--ease);padding:24px 28px 34px}
-    .mobile-menu.open{transform:translateY(0)}
-    .mobile-menu a{display:block;font-family:var(--font-mono);font-weight:500;font-size:15px;color:var(--paper);
-      text-decoration:none;padding:14px 0;border-bottom:1px solid var(--gray-2);transition:color .25s,text-shadow .25s}
-    .mobile-menu a:not(.btn){color:var(--lime)}
-    /* the shiny CTA keeps its own border and colours instead of the menu link styles */
-    .mobile-menu .mobile-cta{display:inline-flex;margin-top:22px;padding:14px 20px;border:1px solid transparent;
-      font-size:14px;font-weight:600;color:var(--paper)}
+    /* Full-screen menu: slides down over the page with the green gradient behind it. Closed, it sits
+       above the viewport, so the gradient's WebGL loop pauses (it only runs while on screen). */
+    .mobile-menu{display:flex;flex-direction:column;position:fixed;inset:0;height:100vh;height:100dvh;z-index:49;
+      overflow:hidden auto;padding:110px 28px 40px;background:var(--ink);
+      transform:translateY(-100%);transition:transform .55s var(--ease),visibility 0s .55s;visibility:hidden}
+    .mobile-menu.open{transform:none;visibility:visible;transition:transform .55s var(--ease)}
+    .mm-bg{position:absolute !important;inset:0;z-index:0}
+    /* darkens the gradient a little so the white titles and the green current page stay readable */
+    .mobile-menu::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+      background:linear-gradient(170deg,rgba(10,10,10,.15) 0%,rgba(10,10,10,.45) 55%,rgba(10,10,10,.8) 100%)}
+    .mm-links,.mm-foot{position:relative;z-index:2}
+    .mm-links{display:flex;flex-direction:column;gap:6px;margin-top:auto}
+    .mm-links a{display:flex;align-items:baseline;gap:16px;padding:4px 0;text-decoration:none;color:var(--paper)}
+    .mm-num{font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.08em;color:rgba(250,250,250,.5);
+      min-width:18px}
+    .mm-label{font-family:var(--font-display);font-weight:800;font-size:clamp(38px,11vw,54px);letter-spacing:-.04em;
+      line-height:1.05;transition:color .25s,text-shadow .25s}
+    .mm-links a[aria-current="page"] .mm-label,.mm-links a:active .mm-label{color:var(--lime);
+      text-shadow:0 0 18px rgba(175,252,48,.45)}
+    .mm-links a[aria-current="page"] .mm-num{color:var(--lime)}
+    .mm-foot{margin-top:auto;padding-top:36px;border-top:1px solid rgba(250,250,250,.14);display:flex;justify-content:center}
+    /* entries rise in one after another as the menu opens */
+    .mm-links a,.mm-foot{opacity:0;transform:translateY(18px);transition:opacity .4s var(--ease),transform .5s var(--ease)}
+    .mobile-menu.open .mm-links a,.mobile-menu.open .mm-foot{opacity:1;transform:none;transition-delay:calc(.18s + var(--i) * .06s)}
+    /* the shiny CTA keeps its own border and colours */
+    /* !important: the button's own inline styles otherwise win over this stylesheet */
+    .mobile-menu .mobile-cta{display:inline-flex;padding:18px 34px !important;font-size:16px !important;font-weight:600}
+    /* while the menu is open the header floats over it without its own background, and the page doesn't scroll */
+    html.menu-open{overflow:hidden}
+    html.menu-open header{background:transparent;backdrop-filter:none;border-bottom-color:transparent}
+    html.menu-open .burger span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    html.menu-open .burger span:nth-child(2){opacity:0}
+    html.menu-open .burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
     .foot{flex-direction:column;justify-content:center;text-align:center;gap:16px}
     .intro-grid{grid-template-columns:1fr;gap:40px}
     .svc-top{grid-template-columns:1fr;gap:32px}

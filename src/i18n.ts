@@ -27,7 +27,7 @@ export const ui = {
     menu: 'Menú',
     cta: 'Empezar proyecto',
     footer: 'contenido + web con IA',
-    nav: { web: 'Web', contenido: 'Contenido IA', proceso: 'Proceso', faq: 'FAQ', contacto: 'Contacto' },
+    nav: { home: 'Inicio', web: 'Web', contenido: 'Contenido IA', proceso: 'Proceso', faq: 'FAQ', contacto: 'Contacto' },
   },
   en: {
     followUs: 'See more of our work on Instagram',
@@ -36,6 +36,6 @@ export const ui = {
     menu: 'Menu',
     cta: 'Start a project',
     footer: 'content + web with AI',
-    nav: { web: 'Web', contenido: 'AI Content', proceso: 'Process', faq: 'FAQ', contacto: 'Contact' },
+    nav: { home: 'Home', web: 'Web', contenido: 'AI Content', proceso: 'Process', faq: 'FAQ', contacto: 'Contact' },
   },
 } as const;

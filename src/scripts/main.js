@@ -9,8 +9,17 @@ var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   // mobile menu
   var burger = document.getElementById('burger');
   var menu = document.getElementById('mobileMenu');
-  burger.addEventListener('click', function(){ menu.classList.toggle('open'); });
-  menu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ menu.classList.remove('open'); }); });
+  function setMenu(open){
+    menu.classList.toggle('open', open);
+    document.documentElement.classList.toggle('menu-open', open);
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    menu.setAttribute('aria-hidden', open ? 'false' : 'true');
+  }
+  burger.addEventListener('click', function(){ setMenu(!menu.classList.contains('open')); });
+  menu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ setMenu(false); }); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && menu.classList.contains('open')) setMenu(false); });
+  // closes itself if the window grows to the desktop layout while open
+  window.matchMedia('(min-width: 901px)').addEventListener('change', function(e){ if(e.matches) setMenu(false); });
 
   // copy-to-clipboard buttons (e.g. the email on the contact page)
   document.querySelectorAll('[data-copy]').forEach(function(btn){
