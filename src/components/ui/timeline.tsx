@@ -96,6 +96,8 @@ export default function Timeline({
   const sectionRef = useRef<HTMLElement>(null);
   const wholeSliderRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
+  // each step's reveal (stem, dot, copy) as a paused timeline, driven by where the line's tip is
+  const revealsRef = useRef<Record<string, gsap.core.Timeline>>({});
   const reducedMotion = usePrefersReducedMotion();
   const normalizedDuration = Math.max(0.2, duration);
   // Steps alternate: first above the line, second below, and so on.
@@ -131,45 +133,52 @@ export default function Timeline({
     // The pinned stage is only as tall as its content, so the slide ends exactly when the stage is
     // released and the content after the section follows right away (no empty screen below it).
     const releasedAt = () => `bottom ${stageRef.current?.offsetHeight ?? window.innerHeight}px`;
-    // Phones: the step nearest the centre of the screen is in focus (full opacity, lifted, green
-    // title, glowing dot) and the others fade back, so the copy reacts as the line slides past.
+    // The line is drawn with the scroll: its tip stays at a fixed point on screen (right of centre)
+    // while the track slides, so it grows as you advance instead of appearing already drawn. Each
+    // step reveals as the tip reaches its stem. On phones the step nearest the centre is in focus
+    // (full opacity, green title) and the others fade back; only opacity and colour change, since
+    // moving text on every scroll frame made it shimmer.
     const copies = [...section.querySelectorAll<HTMLElement>("[data-copy]")];
-    const focus = () => {
-      const mid = window.innerWidth / 2;
+    const stepEls = [...section.querySelectorAll<HTMLElement>("[data-step]")];
+    const tipAt = isMobile ? 0.62 : 0.8; // where the tip sits, as a share of the screen width
+    const revealSpan = isMobile ? 0.3 : 0.12; // tip travel (share of screen) for a full reveal
+    let lineStart = 0, lineMax = 0, stems: number[] = [];
+    const measure = () => {
+      if (!line?.parentElement) return;
+      lineStart = leftIn(line.parentElement) + (line.previousElementSibling as HTMLElement | null)?.offsetWidth!;
+      lineMax = lineWidth();
+      stems = stepEls.map((el) => leftIn(el));
+    };
+    const update = () => {
+      const vw = window.innerWidth;
+      const slid = -(gsap.getProperty(slider, "x") as number);
+      const width = reducedMotion ? lineMax
+        : Math.max(0, Math.min(lineMax, slid * 1.6, slid + vw * tipAt - lineStart));
+      if (line) line.style.width = `${width}px`;
+      const tip = lineStart + width;
+      stepEls.forEach((el, i) => {
+        const tl = revealsRef.current[el.dataset.step!];
+        if (tl) tl.progress(reducedMotion ? 1 : Math.min(1, Math.max(0, (tip - stems[i]) / (vw * revealSpan))));
+      });
+      if (!isMobile) return;
       copies.forEach((el) => {
         const r = el.getBoundingClientRect();
-        const f = reducedMotion ? 1 : Math.max(0, 1 - Math.abs(r.left + r.width / 2 - mid) / (window.innerWidth * 0.75));
-        // Only opacity and colour change: moving or scaling text on every scroll frame made it shimmer.
+        const f = reducedMotion ? 1 : Math.max(0, 1 - Math.abs(r.left + r.width / 2 - vw / 2) / (vw * 0.75));
         el.style.opacity = (0.25 + f * 0.75).toFixed(2);
         el.style.setProperty("--f", f.toFixed(2));
       });
     };
-    // focus follows the slide itself (not the raw scroll), so it stays in step with the smoothing
+    // everything follows the slide itself (not the raw scroll), so it stays in step with the smoothing
     gsap.timeline({
       scrollTrigger: {
         trigger: section, start: "top top", end: releasedAt, scrub: isMobile ? 0.3 : true, invalidateOnRefresh: true,
-        onRefresh: isMobile ? focus : undefined,
+        onRefresh: () => { measure(); update(); },
       },
       defaults: { ease: "none" },
-      onUpdate: isMobile ? focus : undefined,
+      onUpdate: update,
     }).fromTo(slider, { x: 0 }, { x: slideBy });
-
-    if (reducedMotion) {
-      gsap.set(".journey-line", { width: lineWidth });
-      return;
-    }
-
-    gsap.to(".journey-line", {
-      width: lineWidth,
-      ease: "none",
-      scrollTrigger: {
-        trigger: section,
-        start: isMobile ? "top 30%" : "top 25%",
-        end: releasedAt,
-        scrub: isMobile ? 0.3 : true,
-        invalidateOnRefresh: true,
-      },
-    });
+    measure();
+    update();
   }, { dependencies: [reducedMotion], scope: sectionRef });
 
   useGSAP(() => {
@@ -177,6 +186,7 @@ export default function Timeline({
     if (!section) return;
     const q = (sel: string) => section.querySelectorAll<HTMLElement>(sel);
 
+    revealsRef.current = {};
     if (reducedMotion) {
       items.forEach((item) => {
         gsap.set(q(`.jl-${item.id}`), { scaleY: 1 });
@@ -197,20 +207,11 @@ export default function Timeline({
       return s.lines;
     };
 
-    // Each step reveals over a window of the section's scroll; windows are spread evenly
-    // across the slide (the original's hand-tuned seven positions, generalised to any count).
-    const isMobile = window.innerWidth < 600;
-    const [first, last, span] = isMobile ? [22, 69, 10] : [6, 65, 20];
-    const step = items.length > 1 ? (last - first) / (items.length - 1) : 0;
-
-    items.forEach((item, index) => {
-      const startPos = first + index * step;
+    items.forEach((item) => {
       const textLines = [...split(`.tag-${item.id}`), ...split(`.title-${item.id}`)];
       const descriptionLines = split(`.description-${item.id}`);
 
-      gsap.timeline({
-        scrollTrigger: { trigger: section, start: `${startPos}% 30%`, end: `${startPos + span}% 50%`, scrub: isMobile ? 0.3 : true },
-      })
+      revealsRef.current[item.id] = gsap.timeline({ paused: true })
         .to(q(`.jl-${item.id}`), { scaleY: 1, duration: normalizedDuration * 0.4 })
         .to(q(`.jd-${item.id}`), { scale: 1, duration: normalizedDuration * 0.4 }, "<")
         .fromTo(textLines, { yPercent: 110 }, {
@@ -220,6 +221,8 @@ export default function Timeline({
           yPercent: 0, duration: normalizedDuration, stagger: 0.02, ease: "power2.out",
         }, "<");
     });
+
+    ScrollTrigger.refresh();
 
     // Phones fire resize while scrolling (the address bar shows and hides); re-measuring then made
     // everything jump, so only a real width change triggers a refresh.
@@ -281,7 +284,7 @@ export default function Timeline({
 
               <div className="flex h-full w-full gap-x-[15vw] max-[600px]:gap-x-[40vw]">
                 {topItems.map((item) => (
-                  <div key={item.id} data-step className="relative h-full w-[30vw] shrink-0 px-[3vw] max-[600px]:w-[70vw] max-[600px]:px-[7vw]">
+                  <div key={item.id} data-step={item.id} className="relative h-full w-[30vw] shrink-0 px-[3vw] max-[600px]:w-[70vw] max-[600px]:px-[7vw]">
                     <div className="absolute bottom-0 left-0 top-0 h-full w-full">
                       <div className={`jd-${item.id} relative aspect-square size-[1vw] translate-x-[-50%] rounded-full shadow-[0_0_12px_rgba(175,252,48,.7)] max-[600px]:size-[2.5vw]`} style={activeStyle} />
                       <div className={`jl-${item.id} h-[94%] w-px origin-bottom rounded-full`} style={activeStyle} />
@@ -301,7 +304,7 @@ export default function Timeline({
 
               <div className="ml-[7vw] flex h-full w-full gap-x-[20vw] max-[600px]:ml-[7vw] max-[600px]:gap-x-[40vw]">
                 {bottomItems.map((item) => (
-                  <div key={item.id} data-step className="relative h-full w-[25vw] shrink-0 px-[3vw] max-[600px]:w-[70vw] max-[600px]:px-[7vw]">
+                  <div key={item.id} data-step={item.id} className="relative h-full w-[25vw] shrink-0 px-[3vw] max-[600px]:w-[70vw] max-[600px]:px-[7vw]">
                     <div className="absolute bottom-[-1%] left-0 h-full w-full">
                       <div className={`jl-${item.id} h-[94%] w-px origin-top rounded-full max-[600px]:h-full`} style={activeStyle} />
                       <div className={`jd-${item.id} relative aspect-square size-[1vw] translate-x-[-50%] rounded-full shadow-[0_0_12px_rgba(175,252,48,.7)] max-[600px]:size-[2.5vw]`} style={activeStyle} />
