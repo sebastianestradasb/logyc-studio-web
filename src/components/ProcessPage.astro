@@ -4,6 +4,7 @@ import HeroGradient from './HeroGradient.astro';
 import Instagram from './Instagram.astro';
 import ShinyButton from './ui/shiny-button';
 import StackedSteps from './react/StackedSteps';
+import Timeline from './ui/timeline';
 import { routes, type Lang } from '../i18n';
 
 interface Props {
@@ -39,6 +40,9 @@ const copy = {
     webTitleA: 'De la idea a tu sitio,',
     webTitleB: 'en días.',
     webLead: 'Plan Landing en 3 a 5 días hábiles. Plan Profesional en 7 a 10 días hábiles.',
+    webTimelineTitle: 'Tu sitio en 7 pasos.',
+    webTimelinePeriod: '3 a 10 días hábiles',
+    webTimelineImageAlt: 'Sitio web de Precision Garage, creado por LOGYC Studio',
     webSteps: [
       { title: 'Conversación', tag: 'Inicio', text: 'Nos cuentas de tu negocio, a quién le vendes y qué quieres lograr. Te recomendamos el paquete que mejor se ajusta.' },
       { title: 'Confirmación y primer pago', tag: 'Inicio', text: 'Confirmas el paquete y pagas el 50% por transferencia bancaria. Con eso agendamos tu fecha de entrega.' },
@@ -100,6 +104,9 @@ const copy = {
     webTitleA: 'From idea to website,',
     webTitleB: 'in days.',
     webLead: 'Landing plan in 3 to 5 business days. Professional plan in 7 to 10 business days.',
+    webTimelineTitle: 'Your site in 7 steps.',
+    webTimelinePeriod: '3 to 10 business days',
+    webTimelineImageAlt: 'Precision Garage website, built by LOGYC Studio',
     webSteps: [
       { title: 'Conversation', tag: 'Kickoff', text: 'You tell us about your business, who you sell to, and what you want to achieve. We recommend the package that fits best.' },
       { title: 'Confirmation and first payment', tag: 'Kickoff', text: 'You confirm the package and pay 50% by bank transfer. That locks in your delivery date.' },
@@ -181,14 +188,20 @@ const aiContent = routes.content[lang];
 <!-- 01 SITIOS WEB -->
 <section class="block proc" id="proceso-web">
   <div class="wrap">
-    <div class="proc-stage">
-    <div class="proc-pin">
-      <div class="sec-head fx"><span class="sec-num">[ 01 ]</span><span class="eyebrow"><span class="bk">/</span> {copy.webEyebrow}</span></div>
-      <h2 class="sec-title fx">{copy.webTitleA}<br><span class="lime">{copy.webTitleB}</span></h2>
-      <p class="lead fx">{copy.webLead}</p>
-    </div>
-    <StackedSteps client:visible steps={copy.webSteps} top="var(--stack-top, 96px)" />
-    </div>
+    <div class="sec-head fx"><span class="sec-num">[ 01 ]</span><span class="eyebrow"><span class="bk">/</span> {copy.webEyebrow}</span></div>
+    <h2 class="sec-title fx">{copy.webTitleA}<br><span class="lime">{copy.webTitleB}</span></h2>
+    <p class="lead fx">{copy.webLead}</p>
+  </div>
+  <!-- full-bleed horizontal timeline: pins and slides sideways while scrolling -->
+  <Timeline
+    client:visible
+    steps={copy.webSteps.map((st, i) => ({ ...st, tag: `${String(i + 1).padStart(2, '0')} · ${st.tag}` }))}
+    title={copy.webTimelineTitle}
+    periodLabel={copy.webTimelinePeriod}
+    imageUrl="/img/portfolio/precision-garage-top.jpg"
+    imageAlt={copy.webTimelineImageAlt}
+  />
+  <div class="wrap">
     <div class="proc-more fx"><a href={routes.web[lang]} class="btn btn-primary">{copy.webCta} <span class="arw">→</span></a></div>
   </div>
 </section>
