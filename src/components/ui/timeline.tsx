@@ -12,6 +12,8 @@ import { SplitText } from "gsap/SplitText";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, SplitText);
+  // the address bar on phones changes the viewport height while scrolling; don't re-measure for it
+  ScrollTrigger.config({ ignoreMobileResize: true });
 }
 
 /* Inline stand-in for @gsap/react's useGSAP: one gsap.context lives for the component's lifetime,
@@ -137,17 +139,19 @@ export default function Timeline({
       copies.forEach((el) => {
         const r = el.getBoundingClientRect();
         const f = reducedMotion ? 1 : Math.max(0, 1 - Math.abs(r.left + r.width / 2 - mid) / (window.innerWidth * 0.75));
-        el.style.opacity = String(0.22 + f * 0.78);
-        el.style.transform = `translateY(${(1 - f) * 22}px) scale(${0.93 + f * 0.07})`;
-        el.style.setProperty("--f", String(f));
+        // Only opacity and colour change: moving or scaling text on every scroll frame made it shimmer.
+        el.style.opacity = (0.25 + f * 0.75).toFixed(2);
+        el.style.setProperty("--f", f.toFixed(2));
       });
     };
+    // focus follows the slide itself (not the raw scroll), so it stays in step with the smoothing
     gsap.timeline({
       scrollTrigger: {
-        trigger: section, start: "top top", end: releasedAt, scrub: true, invalidateOnRefresh: true,
-        onUpdate: isMobile ? focus : undefined, onRefresh: isMobile ? focus : undefined,
+        trigger: section, start: "top top", end: releasedAt, scrub: isMobile ? 0.3 : true, invalidateOnRefresh: true,
+        onRefresh: isMobile ? focus : undefined,
       },
       defaults: { ease: "none" },
+      onUpdate: isMobile ? focus : undefined,
     }).fromTo(slider, { x: 0 }, { x: slideBy });
 
     if (reducedMotion) {
@@ -162,7 +166,7 @@ export default function Timeline({
         trigger: section,
         start: isMobile ? "top 30%" : "top 25%",
         end: releasedAt,
-        scrub: true,
+        scrub: isMobile ? 0.3 : true,
         invalidateOnRefresh: true,
       },
     });
@@ -205,7 +209,7 @@ export default function Timeline({
       const descriptionLines = split(`.description-${item.id}`);
 
       gsap.timeline({
-        scrollTrigger: { trigger: section, start: `${startPos}% 30%`, end: `${startPos + span}% 50%`, scrub: true },
+        scrollTrigger: { trigger: section, start: `${startPos}% 30%`, end: `${startPos + span}% 50%`, scrub: isMobile ? 0.3 : true },
       })
         .to(q(`.jl-${item.id}`), { scaleY: 1, duration: normalizedDuration * 0.4 })
         .to(q(`.jd-${item.id}`), { scale: 1, duration: normalizedDuration * 0.4 }, "<")
@@ -217,7 +221,14 @@ export default function Timeline({
         }, "<");
     });
 
-    const handleResize = () => ScrollTrigger.refresh();
+    // Phones fire resize while scrolling (the address bar shows and hides); re-measuring then made
+    // everything jump, so only a real width change triggers a refresh.
+    let lastWidth = window.innerWidth;
+    const handleResize = () => {
+      if (window.innerWidth === lastWidth) return;
+      lastWidth = window.innerWidth;
+      ScrollTrigger.refresh();
+    };
     window.addEventListener("resize", handleResize);
     return () => {
       splits.forEach((s) => s.revert());
@@ -226,7 +237,7 @@ export default function Timeline({
   }, { dependencies: [normalizedDuration, reducedMotion], scope: sectionRef });
 
   const stepCopy = (item: (typeof items)[number], index: number) => (
-    <div data-copy className="relative space-y-[.7vw] transition-transform duration-150 max-[600px]:space-y-[2.5vw] max-[600px]:will-change-transform">
+    <div data-copy className="relative space-y-[.7vw] max-[600px]:space-y-[2.5vw]">
       <span
         aria-hidden="true"
         className="pointer-events-none absolute -top-[13vw] right-[2vw] -z-10 hidden font-[family-name:var(--font-display)] text-[24vw] font-extrabold leading-none tracking-[-.05em] text-transparent [-webkit-text-stroke:1px_rgba(175,252,48,calc(.12+var(--f,0)*.4))] max-[600px]:block"
@@ -254,7 +265,7 @@ export default function Timeline({
       <div ref={stageRef} className="sticky top-0 w-full overflow-hidden pb-[3vw] pt-[max(9vw,110px)] max-[600px]:pb-[8vw] max-[600px]:pt-[max(96px,calc((100svh-56vh)/2))]">
         <div
           ref={wholeSliderRef}
-          className="relative mr-[2vw] flex h-[30vw] w-[240vw] items-center gap-[5vw] px-[5vw] max-[600px]:h-[56vh] max-[600px]:w-[800vw] max-[600px]:px-[7vw]"
+          className="relative mr-[2vw] flex h-[30vw] will-change-transform w-[240vw] items-center gap-[5vw] px-[5vw] max-[600px]:h-[56vh] max-[600px]:w-[800vw] max-[600px]:px-[7vw]"
         >
           <div className="h-full w-[30vw] shrink-0 overflow-hidden rounded-[1vw] border border-[#2a2a2a] max-[600px]:h-[65vw] max-[600px]:w-[85vw] max-[600px]:rounded-[5vw]">
             <img src={imageUrl} alt={imageAlt} draggable={false} className="h-full w-full object-cover object-top" />
