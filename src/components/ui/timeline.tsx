@@ -129,8 +129,24 @@ export default function Timeline({
     // The pinned stage is only as tall as its content, so the slide ends exactly when the stage is
     // released and the content after the section follows right away (no empty screen below it).
     const releasedAt = () => `bottom ${stageRef.current?.offsetHeight ?? window.innerHeight}px`;
+    // Phones: the step nearest the centre of the screen is in focus (full opacity, lifted, green
+    // title, glowing dot) and the others fade back, so the copy reacts as the line slides past.
+    const copies = [...section.querySelectorAll<HTMLElement>("[data-copy]")];
+    const focus = () => {
+      const mid = window.innerWidth / 2;
+      copies.forEach((el) => {
+        const r = el.getBoundingClientRect();
+        const f = reducedMotion ? 1 : Math.max(0, 1 - Math.abs(r.left + r.width / 2 - mid) / (window.innerWidth * 0.75));
+        el.style.opacity = String(0.22 + f * 0.78);
+        el.style.transform = `translateY(${(1 - f) * 22}px) scale(${0.93 + f * 0.07})`;
+        el.style.setProperty("--f", String(f));
+      });
+    };
     gsap.timeline({
-      scrollTrigger: { trigger: section, start: "top top", end: releasedAt, scrub: true, invalidateOnRefresh: true },
+      scrollTrigger: {
+        trigger: section, start: "top top", end: releasedAt, scrub: true, invalidateOnRefresh: true,
+        onUpdate: isMobile ? focus : undefined, onRefresh: isMobile ? focus : undefined,
+      },
       defaults: { ease: "none" },
     }).fromTo(slider, { x: 0 }, { x: slideBy });
 
@@ -209,18 +225,24 @@ export default function Timeline({
     };
   }, { dependencies: [normalizedDuration, reducedMotion], scope: sectionRef });
 
-  const stepCopy = (item: (typeof items)[number]) => (
-    <>
+  const stepCopy = (item: (typeof items)[number], index: number) => (
+    <div data-copy className="relative space-y-[.7vw] transition-transform duration-150 max-[600px]:space-y-[2.5vw] max-[600px]:will-change-transform">
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-[13vw] right-[2vw] -z-10 hidden font-[family-name:var(--font-display)] text-[24vw] font-extrabold leading-none tracking-[-.05em] text-transparent [-webkit-text-stroke:1px_rgba(175,252,48,calc(.12+var(--f,0)*.4))] max-[600px]:block"
+      >
+        {String(index + 1).padStart(2, "0")}
+      </span>
       <p className={`tag-${item.id} font-[family-name:var(--font-mono)] text-[.8vw] font-bold uppercase tracking-[.16em] max-[600px]:text-[2.9vw]`} style={tagStyle}>
         {item.tag}
       </p>
-      <h4 className={`title-${item.id} font-[family-name:var(--font-display)] text-[1.9vw] font-bold leading-[1.02] tracking-[-.03em] max-[600px]:text-[6.6vw]`}>
+      <h4 className={`title-${item.id} font-[family-name:var(--font-display)] text-[1.9vw] font-bold leading-[1.02] tracking-[-.03em] max-[600px]:text-[6.6vw] max-[600px]:[color:color-mix(in_srgb,#AFFC30_calc(var(--f,0)*100%),#FAFAFA)] max-[600px]:[text-shadow:0_0_calc(var(--f,0)*18px)_rgba(175,252,48,calc(var(--f,0)*.45))]`}>
         {item.title}
       </h4>
       <p className={`description-${item.id} w-[92%] text-[1.02vw] leading-[1.45] max-[600px]:w-full max-[600px]:text-[3.9vw]`} style={mutedTextStyle}>
         {item.text}
       </p>
-    </>
+    </div>
   );
 
   return (
@@ -229,10 +251,10 @@ export default function Timeline({
       className="relative h-[200vw] w-full max-[600px]:h-[340vh]"
       style={{ color: textColor }}
     >
-      <div ref={stageRef} className="sticky top-0 w-full overflow-hidden pb-[3vw] pt-[max(9vw,110px)] max-[600px]:pb-[8vw] max-[600px]:pt-[96px]">
+      <div ref={stageRef} className="sticky top-0 w-full overflow-hidden pb-[3vw] pt-[max(9vw,110px)] max-[600px]:pb-[8vw] max-[600px]:pt-[max(96px,calc((100svh-56vh)/2))]">
         <div
           ref={wholeSliderRef}
-          className="relative mr-[2vw] flex h-[30vw] w-[240vw] items-center gap-[5vw] px-[5vw] max-[600px]:h-[78vh] max-[600px]:w-[800vw] max-[600px]:px-[7vw]"
+          className="relative mr-[2vw] flex h-[30vw] w-[240vw] items-center gap-[5vw] px-[5vw] max-[600px]:h-[56vh] max-[600px]:w-[800vw] max-[600px]:px-[7vw]"
         >
           <div className="h-full w-[30vw] shrink-0 overflow-hidden rounded-[1vw] border border-[#2a2a2a] max-[600px]:h-[65vw] max-[600px]:w-[85vw] max-[600px]:rounded-[5vw]">
             <img src={imageUrl} alt={imageAlt} draggable={false} className="h-full w-full object-cover object-top" />
@@ -259,7 +281,7 @@ export default function Timeline({
                       <div className={`jd-${item.id} relative aspect-square size-[1vw] translate-x-[-50%] rounded-full shadow-[0_0_12px_rgba(175,252,48,.7)] max-[600px]:size-[2.5vw]`} style={activeStyle} />
                       <div className={`jl-${item.id} h-[94%] w-px origin-bottom rounded-full`} style={activeStyle} />
                     </div>
-                    <div className="mt-[-1vw] space-y-[.7vw] max-[600px]:mt-[-2vw] max-[600px]:space-y-[2.5vw]">{stepCopy(item)}</div>
+                    <div className="isolate mt-[-1vw] max-[600px]:mt-[-2vw]">{stepCopy(item, items.indexOf(item))}</div>
                   </div>
                 ))}
               </div>
@@ -279,7 +301,7 @@ export default function Timeline({
                       <div className={`jl-${item.id} h-[94%] w-px origin-top rounded-full max-[600px]:h-full`} style={activeStyle} />
                       <div className={`jd-${item.id} relative aspect-square size-[1vw] translate-x-[-50%] rounded-full shadow-[0_0_12px_rgba(175,252,48,.7)] max-[600px]:size-[2.5vw]`} style={activeStyle} />
                     </div>
-                    <div className="flex h-full w-full flex-col justify-end space-y-[.7vw] max-[600px]:space-y-[2.5vw]">{stepCopy(item)}</div>
+                    <div className="isolate flex h-full w-full flex-col justify-end">{stepCopy(item, items.indexOf(item))}</div>
                   </div>
                 ))}
               </div>
