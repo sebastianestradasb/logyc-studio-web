@@ -132,7 +132,9 @@ export default function Timeline({
 
     // The pinned stage is only as tall as its content, so the slide ends exactly when the stage is
     // released and the content after the section follows right away (no empty screen below it).
-    const releasedAt = () => `bottom ${stageRef.current?.offsetHeight ?? window.innerHeight}px`;
+    // The slide finishes a little before the stage is released, so the last step stays on screen
+    // for a moment before the content after the section comes into view.
+    const releasedAt = () => `bottom ${(stageRef.current?.offsetHeight ?? window.innerHeight) + window.innerHeight * 0.4}px`;
     // The line is drawn with the scroll: its tip stays at a fixed point on screen (right of centre)
     // while the track slides, so it grows as you advance instead of appearing already drawn. Each
     // step reveals as the tip reaches its stem. On phones the step nearest the centre is in focus
@@ -152,10 +154,11 @@ export default function Timeline({
     const update = () => {
       const vw = window.innerWidth;
       const slid = -(gsap.getProperty(slider, "x") as number);
-      const width = reducedMotion ? lineMax
-        : Math.max(0, Math.min(lineMax, slid * 1.6, slid + vw * tipAt - lineStart));
+      const reach = Math.max(0, Math.min(slid * 1.6, slid + vw * tipAt - lineStart));
+      const width = reducedMotion ? lineMax : Math.min(lineMax, reach);
       if (line) line.style.width = `${width}px`;
-      const tip = lineStart + width;
+      // steps follow the uncapped tip, so the last one still finishes after the line has ended
+      const tip = lineStart + reach;
       stepEls.forEach((el, i) => {
         const tl = revealsRef.current[el.dataset.step!];
         if (tl) tl.progress(reducedMotion ? 1 : Math.min(1, Math.max(0, (tip - stems[i]) / (vw * revealSpan))));
